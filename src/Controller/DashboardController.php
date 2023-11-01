@@ -57,6 +57,8 @@ class DashboardController extends AbstractController
             'months' => $this->monthRepository->findBy(['user' => $user], ['date' => 'DESC']),
             'budgets' => $this->budgetRepository->findBy(['user' => $user]),
             'transactionFilterForm' => $transactionFilterForm->createView(),
+            'isLoginReferer' => str_contains($request->headers->get('referer'), 'login'),
+            'emojis' => ['🤍','🖤','💜','❤️‍🩹','💙','💚','❤️‍🔥','🫀','💘', '️❤️']
         ]);
     }
 

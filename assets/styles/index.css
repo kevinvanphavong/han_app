@@ -27,3 +27,7 @@ p,td, th, select, input, button {
     margin: 0.5em 0;
     text-align: center;
 }
+
+.user-username {
+    font-weight: 400;
+}
