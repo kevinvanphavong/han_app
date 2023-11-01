@@ -1,0 +1,17 @@
+{% extends 'layout.html.twig' %}
+
+{% block title %}Stats Expenses - Personal finance{% endblock %}
+
+{% set theads = ['Name', 'Year', 'Balance', 'Total Earned', 'Total Spent'] %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    {{ encore_entry_link_tags('dashboard_index') }}
+{% endblock stylesheets %}
+
+{% block body %}
+    <div class="wrapper">
+        {% include 'expense/_table-budget-month-expenses.html.twig' %}
+        {% include 'expense/_table-evolution-expenses.html.twig' %}
+    </div>
+{% endblock body %}

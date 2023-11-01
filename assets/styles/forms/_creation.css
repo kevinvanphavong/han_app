@@ -1,0 +1,103 @@
+.transaction-filter-form,
+.month-form,
+.budget-form,
+.transaction-form {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    grid-gap: 1em;
+}
+.transaction-filter-form-row,
+.month-form-row,
+.budget-form-row,
+.transaction-form-row {
+    display: flex;
+    flex-direction: column;
+    grid-gap: 0.5em;
+}
+.transaction-filter-form-row__input,
+.month-form-row__input,
+.budget-form-row__input,
+.transaction-form-row__input {
+    padding: 0.5em;
+    border: 1px solid grey;
+    border-radius: 5px;
+}
+button.month-form-row__input,
+button.budget-form-row__input,
+button.transaction-form-row__input {
+    border: none;
+}
+
+.transaction-filter-form-row__input#transaction_filter_date,
+.month-form-row__input#month_date,
+.transaction-form-row__input#transaction_date {
+    padding: 0;
+    border: none;
+    display: flex;
+    grid-gap: 0.25em;
+}
+
+.transaction-filter-form-row__input#transaction_filter_date select,
+.month-form-row__input#month_date select,
+.transaction-form-row__input#transaction_date select {
+    padding: 0.5em;
+    border: 1px solid grey;
+    border-radius: 5px;
+    width: 100%;
+}
+
+.month-form-row__input#month_date select#month_date_day,
+.transaction-form-row__input#transaction_date select:not(#transaction_date_day) {
+    display: none;
+}
+
+.month-form-row #month_save,
+.budget-form-row #budget_save,
+.transaction-form-row #transaction_save {
+    cursor: pointer;
+    background-color: forestgreen;
+    color: whitesmoke;
+    transition: all 0.5s;
+    width: 50%;
+    margin: 0 auto;
+    box-shadow: 2px 2px 10px lightgray;
+}
+
+.month-form-row #month_save:hover,
+.budget-form-row #budget_save:hover,
+.transaction-form-row #transaction_save:hover {
+    background-color: #1c721c;
+}
+
+.wrapper {
+    margin: 2em auto 2em;
+    width: 80%;
+    max-width: 800px;
+    display: flex;
+    flex-direction: column;
+    grid-gap: 1em;
+}
+
+.wrapper .button-back-dashboard {
+    color: #282828;
+    text-decoration: none;
+    width: fit-content;
+    padding: 0.5em 1em;
+    border: 1px solid #282828;
+    border-radius: 5px;
+    background-color: #e5e5e5;
+    transition: all 0.5s ease;
+    margin-bottom: 2em;
+    box-shadow: 2px 2px 10px lightgray;
+}
+
+.wrapper .button-back-dashboard:hover {
+    color: whitesmoke;
+    background-color: #282828;
+}
+
+.wrapper__separator {
+    width: 50%;
+    margin: 4em auto;
+}

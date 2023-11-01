@@ -1,0 +1,42 @@
+.flash-message {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: fit-content;
+    padding: 1em;
+    color: whitesmoke;
+    &.flash-error {
+        background-color: rgba(194, 21, 21, 0.9);
+        border: 2px solid rgb(194, 21, 21);
+    }
+    &.flash-success {
+        background-color: rgba(34, 139, 34, 0.9);
+        border: 2px solid rgb(34, 139, 34);
+    }
+}
+
+.flash-message--active {
+    animation: flash-message 5s ease-in-out;
+}
+
+@keyframes flash-message {
+    0% {
+        opacity: 0;
+    }
+    10% {
+        opacity: 1;
+    }
+    60% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0;
+    }
+}
+
+.flash-content {
+    display: flex;
+    align-items: center;
+    grid-gap: 1em;
+}

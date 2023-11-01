@@ -1,0 +1,12 @@
+{% extends 'layout.html.twig' %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    {{ encore_entry_link_tags('dashboard_index') }}
+{% endblock stylesheets %}
+
+{% block body %}
+    <div class="wrapper wrapper-edit-page">
+        {% include 'month/_form.html.twig' with {'titleForm': '🗓️ Month edition form'} %}
+    </div>
+{% endblock body %}

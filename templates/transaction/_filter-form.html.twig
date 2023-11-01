@@ -1,0 +1,32 @@
+{% block transactionFilterForm %}
+    {{ form_start(transactionFilterForm) }}
+    {{ form_row(transactionFilterForm.date) }}
+    {{ form_row(transactionFilterForm.month) }}
+    {{ form_row(transactionFilterForm.name) }}
+    {{ form_row(transactionFilterForm.amount) }}
+    {{ form_row(transactionFilterForm.type) }}
+    {{ form_row(transactionFilterForm.budgetCategory) }}
+    {% if transactionFilterForm.limit is defined %}
+        {{ form_row(transactionFilterForm.limit) }}
+    {% endif %}
+    <div class="container-action-filter">
+        {{ form_widget(transactionFilterForm.save) }}
+        <a href="{{ urlResetFilter }}" type="submit" class="button-action button-action-filter js-button-action-reset">Reset</a>
+    </div>
+    {{ form_end(transactionFilterForm) }}
+
+    <script>
+      document.addEventListener('DOMContentLoaded', function() {
+      let btnShowFilter = document.querySelector('.button-action-filter');
+      let filtersContainer = document.querySelector('.filters-container');
+        displayFilters(btnShowFilter, filtersContainer);
+      })
+
+        function displayFilters(btnShowFilter, filtersContainer) {
+          btnShowFilter.addEventListener('click', function() {
+            filtersContainer.classList.toggle('filters-container--hidden');
+            filtersContainer.classList.toggle('filters-container--active');
+          });
+        }
+    </script>
+{% endblock transactionFilterForm %}

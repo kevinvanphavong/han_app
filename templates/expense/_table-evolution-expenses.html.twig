@@ -1,0 +1,36 @@
+{% if budgetsCount > 0 %}
+    <hr class="wrapper__separator">
+    <h2>Evolution of your <span>net expenses</span> by budget</h2><br>
+    <div class="info">
+        <p class="info-month-table"><span>Info:</span> By the term of Net expenses, the value under each budget means the total expenses after subtracting the monthly budget.</p>
+        <p class="info-month-table">If it's a <span class="word word-positive">positive</span> <span class="word word-green">green number</span>, it means you have saved money.</p>
+        <p class="info-month-table">If it's a <span class="word word-negative">negative</span> <span class="word word-red">red number</span>, it means you have spent more than your budget.</p>
+    </div>
+    {% for budgets in containerBudgets %}
+        <table class="month-table">
+            <thead>
+            <tr>
+                {% for budget in budgets %}
+                    <th>{{ budget.name }}</th>
+                {% endfor %}
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                {% for budget in budgets %}
+                    <td>
+                        {% if transactionsSumByBudget[budget.name] is defined %}
+                            {% set numberOfMonth = months|length %}
+                            {% set value = (budget.amount*numberOfMonth) - transactionsSumByBudget[budget.name] %}
+                            {% set className = value > 0 ? 'word-green' : 'word-red' %}
+                            <p class="{{ className }}">{{ (value < 0 ? value : '+' ~ value) ~ '€' }}</p>
+                        {% else %}
+                            <p>{{ 0 ~ '€' }}</p>
+                        {% endif %}
+                    </td>
+                {% endfor %}
+            </tr>
+            </tbody>
+        </table>
+    {% endfor %}
+{% endif %}

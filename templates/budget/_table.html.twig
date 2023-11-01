@@ -1,0 +1,27 @@
+<div class="budget-view">
+    <div class="budget-view__header">
+        <h2>💰 List of budgets</h2>
+        <a href="{{ path('creation_form_page') }}#budget-form" class="button-action button-action-add">Add new budget</a>
+    </div>
+    <table class="budget-table">
+        <thead>
+        <tr>
+            <th>Name</th>
+            <th>Amount</th>
+            <th class="budget-table-actions">Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for budget in budgets %}
+            <tr>
+                <td>{{ budget.name }}</td>
+                <td>{{ (budget.amount ?? 0) ~ '€' }}</td>
+                <td class="budget-table-actions">
+                    <a class="budget-table-actions__link budget-table-actions__link-edit" href="{{ path('budget_edit_action', {'id': budget.id}) }}"><i class="fa-solid fa-pen-to-square"></i></a>
+                    <a class="budget-table-actions__link budget-table-actions__link-delete" href="{{ path('budget_delete_action', {'id': budget.id}) }}"><i class="fa-solid fa-trash"></i></a>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>

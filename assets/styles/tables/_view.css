@@ -1,0 +1,204 @@
+.budget-view__header,
+.month-view__header,
+.transaction-view__header {
+    display: flex;
+    justify-content: space-between;
+}
+
+.transaction-view__header .button-action-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    grid-gap: 0.5em;
+}
+
+.container-transaction-table {
+    height: 800px;
+    overflow-y: scroll;
+    padding: 1em;
+}
+
+/* Style de base pour le tableau */
+.budget-table,
+.month-table,
+.transaction-table {
+    width: 100%;
+    border-collapse: collapse;
+    box-shadow: 2px 2px 10px lightgray;
+    /* Style de l'en-tête du tableau */
+    & th {
+        background-color: #333;
+        color: #fff;
+        font-weight: bold;
+        padding: 0.5em 1em;
+        text-align: center;
+    }
+    /* Style des cellules du tableau */
+    & td {
+        padding: 0.5em 1em;
+        text-align: center;
+    }
+    /* Style des lignes paires du tableau */
+    & tr:nth-child(even) {
+        background-color: #d0d0d0;
+    }
+    /* Style au survol d'une ligne */
+    & tr:hover {
+        background-color: #ddd;
+    }
+}
+
+.transaction-table {
+    .transaction-type {
+        padding: 0.25em 0.5em ;
+        border-radius: 10px;
+        text-align: center;
+        color: whitesmoke;
+    }
+    .transaction-type--collected {
+        background-color: #417e3c;
+    }
+    .transaction-type--spent {
+        background-color: #B0413E;
+    }
+}
+
+.budget-table-actions,
+.month-table-actions,
+.transaction-table-actions {
+    width: 90px;
+}
+
+.budget-table-actions__link,
+.month-table-actions__link,
+.transaction-table-actions__link {
+    color: #5b5b5b;
+}
+
+.budget-table-actions__link:last-child,
+.month-table-actions__link:last-child,
+.transaction-table-actions__link:last-child {
+    padding-left: 0.5em;
+}
+
+.button-action {
+    padding: 0.5em 1em;
+    width: fit-content;
+    border-radius: 5px;
+    color: whitesmoke;
+    text-decoration: none;
+    box-shadow: 2px 2px 10px lightgray;
+}
+
+.button-action-filter {
+    /*width: 50%;*/
+    /*height: fit-content;*/
+    text-align: center;
+    background-color: #225f8b;
+    &:hover {
+        background-color: #1d5277;
+    }
+}
+
+.button-action-add {
+    background-color: forestgreen;
+    &:hover {
+        background-color: #1d771d;
+    }
+}
+
+.button-action-see-more {
+    background-color: #e56b35;
+    &:hover {
+        background-color: #d06031;
+    }
+}
+
+.tables-view {
+    display: flex;
+    flex-direction: column;
+    grid-gap: 2em;
+}
+
+.transaction-view,
+.month-view,
+.budget-view {
+    display: flex;
+    flex-direction: column;
+    grid-gap: 1em;
+    width: 100%;
+    max-width: 800px;
+}
+
+table {
+    border-radius: 5px;
+    & thead tr:first-child {
+        & th:first-child {
+            border-top-left-radius: 5px;
+        }
+        & th:last-child {
+            border-top-right-radius: 5px;
+        }
+    }
+    & tbody tr:last-child {
+        & td:first-child {
+            border-bottom-left-radius: 5px;
+        }
+        & td:last-child {
+            border-bottom-right-radius: 5px;
+        }
+    }
+}
+
+.budget-ratio,
+.budget-amount {
+    font-size: 0.8rem;
+    color: #999;
+    font-weight: 400;
+}
+
+.budget-ratio.over {
+    color: red;
+}
+.budget-ratio.under {
+    color: #1c721c;
+}
+
+.info-month-table {
+    font-size: 0.8rem;
+    color: #999;
+}
+
+.info {
+    display: flex;
+    flex-direction: column;
+    grid-gap: 0.75em;
+    vertical-align: bottom;
+    margin-bottom: 1em;
+}
+
+.word-green {
+    padding: 0.2em 0.5em;
+    background-color: #1c721c;
+    border-radius: 10px;
+    color: whitesmoke;
+}
+.word-red {
+    color: whitesmoke;
+    padding: 0.2em 0.5em;
+    background-color: red;
+    border-radius: 10px;
+}
+.word-positive {
+    color: #1c721c;
+}
+.word-negative {
+    color: red;
+}
+
+.count-transactions {
+    font-size: 0.9rem;
+    color: #999;
+    font-weight: 400;
+    vertical-align: super;
+}

@@ -8,9 +8,28 @@
         {% endblock %}
 
         {% block javascripts %}
+            {{ encore_entry_script_tags('appJS') }}
         {% endblock %}
     </head>
+
+    {% block navbar %}{% endblock navbar %}
+
     <body>
+        {% for label, messages in app.flashes %}
+            {% for message in messages %}
+                <div class="flash-message flash-{{ label }} flash-message--active">
+                    <div class="flash-content">
+                        {% if label is same as 'success' %}
+                            <i class="fa-solid fa-circle-check"></i>
+                        {% elseif label is same as 'error' %}
+                            <i class="fa-solid fa-circle-exclamation"></i>
+                        {% endif %}
+                            <span>{{ message }}</span>
+                    </div>
+                </div>
+            {% endfor %}
+        {% endfor %}
         {% block body %}{% endblock %}
     </body>
+    <script src="https://kit.fontawesome.com/02208eaf76.js" crossorigin="anonymous"></script>
 </html>
