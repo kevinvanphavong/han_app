@@ -13,7 +13,7 @@
 }
 
 body {
-    padding: 1em;
+    padding: 0 1em 1em;
     background: whitesmoke;
 }
 
@@ -28,11 +28,11 @@ p,td, th, select, input, button {
     text-align: center;
 }
 
-.welcome-user {
+.welcome__user {
     width: 100%;
     text-align: right;
 }
 
-.welcome-user__username {
+.welcome__user-username {
     font-weight: 400;
 }
