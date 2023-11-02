@@ -1,6 +1,6 @@
 {% extends 'layout.html.twig' %}
 
-{% block title %}Please log in before access{% endblock %}
+{% block title %}Log in - Han app{% endblock %}
 
 {% block stylesheets %}
     {{ parent() }}
@@ -14,7 +14,7 @@
     <style>
         body {
             height: 100vh;
-            scroll-behavior: smooth;
+            padding: 0;
         }
         .login-form__wrapper {
             width: 100%;
@@ -24,6 +24,11 @@
             align-items: center;
         }
         .login-form__form {
+            width: 50%;
+            margin: auto 0;
+            max-width: 600px;
+        }
+        .login-form__content {
             background-color: #fff;
             display: flex;
             flex-direction: column;
@@ -48,8 +53,8 @@
     </style>
 
     <div class="login-form__wrapper">
-        <form method="post">
-            <div class="login-form__form">
+        <form method="post" class="login-form__form">
+            <div class="login-form__content">
                 <label for="inputEmail">Email</label>
                 <input type="email" class="login-form__form-email-input" value="{{ last_username }}" name="email" id="inputEmail" autocomplete="email" required autofocus>
                 <label for="inputPassword">Password</label>

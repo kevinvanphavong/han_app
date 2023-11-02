@@ -1,6 +1,6 @@
 {% extends 'layout.html.twig' %}
 
-{% block title %}U spent? - Personal finance{% endblock %}
+{% block title %}U spent? - {{ parent() }}{% endblock %}
 
 {% block stylesheets %}
     {{ parent() }}
@@ -9,10 +9,10 @@
 
 {% block body %}
     <div class="wrapper">
-        {% include 'transaction/_form.html.twig' with {'titleForm': '💸 Enter your new transaction'} %}
+        {% include 'budget/_form.html.twig' with {'titleForm': '💰 Create a budget'} %}
         <hr class="wrapper__separator">
         {% include 'month/_form.html.twig' with {'titleForm': '🗓️ Add a month'} %}
         <hr class="wrapper__separator">
-        {% include 'budget/_form.html.twig' with {'titleForm': '💰 Create a budget'} %}
+        {% include 'transaction/_form.html.twig' with {'titleForm': '💸 Enter your new transaction'} %}
     </div>
 {% endblock body %}

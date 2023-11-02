@@ -202,3 +202,11 @@ table {
     font-weight: 400;
     vertical-align: super;
 }
+
+.no-evolution-expenses {
+    padding: 0.5em;
+    background-color: #333;
+    color: whitesmoke;
+    text-align: center;
+    border-radius: 10px;
+}

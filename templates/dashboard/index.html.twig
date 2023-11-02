@@ -1,6 +1,6 @@
 {% extends 'layout.html.twig' %}
 
-{% block title %}Dashboard - Personal finance{% endblock %}
+{% block title %}Dashboard - {{ parent() }}{% endblock %}
 
 {% block stylesheets %}
     {{ parent() }}
@@ -8,6 +8,9 @@
 {% endblock stylesheets %}
 
 {% block body %}
+    <div class="wrapper-welcome">
+        <p class="welcome__user">Welcome <span class="welcome__user-username">{{ app.user.username ?? app.user.email }} {{ random(emojis) }}</span></p>
+    </div>
     <div class="wrapper">
         <div class="tables-view">
             {% include('transaction/_table.html.twig') with {

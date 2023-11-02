@@ -62,7 +62,7 @@ class DashboardController extends AbstractController
         ]);
     }
 
-    #[Route('/form/creation/entity', name: 'creation_form_page')]
+    #[Route('/form/creation', name: 'creation_form_page')]
     public function creation(Request $request): Response{
         $monthForm = $this->createForm(MonthType::class);
         $monthForm->handleRequest($request);

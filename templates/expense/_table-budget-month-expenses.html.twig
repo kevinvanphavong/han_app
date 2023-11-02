@@ -1,5 +1,5 @@
 <h1 class="page-title">Expenses statistics</h1>
-<h2>Expenses by budgets for every month</h2><br>
+<h2>Expenses by budgets for every month</h2>
 <table class="month-table">
     <thead>
     <tr>
@@ -10,23 +10,29 @@
     </tr>
     </thead>
     <tbody>
-    {% for budgets in containerBudgets %}
-    {% for budget in budgets %}
-        <tr>
-            <td>{{ budget.name }} <span class="budget-amount">({{ budget.amount ~ '€' }})</span></td>
-            {% for transaction in transactionsSum %}
-                {% if transaction[budget.name] is defined %}
-                    <td>{{ transaction[budget.name].amount ~ '€' }}
-                {% else %}
-                    <td>{{ '0€' }}
-                {% endif %}
-                {% set ratio = transaction[budget.name].ratio %}
-                <p class="budget-ratio {{ ratio > 100 ? 'over' : 'under' }}">
-                    ({{ ratio|round(2, 'floor') ~ '%' }})
-                </p></td>
+    {% if containerBudgets|length > 0 %}
+        {% for budgets in containerBudgets %}
+            {% for budget in budgets %}
+                <tr>
+                    <td>{{ budget.name }} <span class="budget-amount">({{ budget.amount ~ '€' }})</span></td>
+                    {% for transaction in transactionsSum %}
+                        {% if transaction[budget.name] is defined %}
+                            <td>{{ transaction[budget.name].amount ~ '€' }}
+                        {% else %}
+                            <td>{{ '0€' }}
+                        {% endif %}
+                        {% set ratio = transaction[budget.name].ratio %}
+                        <p class="budget-ratio {{ ratio > 100 ? 'over' : 'under' }}">
+                            ({{ ratio|round(2, 'floor') ~ '%' }})
+                        </p></td>
+                    {% endfor %}
+                </tr>
             {% endfor %}
+        {% endfor %}
+    {% else %}
+        <tr>
+            <td colspan="10">{{ 'There are no budgets set for your expenses - Create a new budget first' }}</td>
         </tr>
-    {% endfor %}
-    {% endfor %}
+    {% endif %}
     </tbody>
 </table>

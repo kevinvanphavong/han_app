@@ -12,16 +12,22 @@
         </tr>
         </thead>
         <tbody>
-        {% for budget in budgets %}
+        {% if budgets|length > 0 %}
+            {% for budget in budgets %}
+                <tr>
+                    <td>{{ budget.name }}</td>
+                    <td>{{ (budget.amount ?? 0) ~ '€' }}</td>
+                    <td class="budget-table-actions">
+                        <a class="budget-table-actions__link budget-table-actions__link-edit" href="{{ path('budget_edit_action', {'id': budget.id}) }}"><i class="fa-solid fa-pen-to-square"></i></a>
+                        <a class="budget-table-actions__link budget-table-actions__link-delete" href="{{ path('budget_delete_action', {'id': budget.id}) }}"><i class="fa-solid fa-trash"></i></a>
+                    </td>
+                </tr>
+            {% endfor %}
+        {% else %}
             <tr>
-                <td>{{ budget.name }}</td>
-                <td>{{ (budget.amount ?? 0) ~ '€' }}</td>
-                <td class="budget-table-actions">
-                    <a class="budget-table-actions__link budget-table-actions__link-edit" href="{{ path('budget_edit_action', {'id': budget.id}) }}"><i class="fa-solid fa-pen-to-square"></i></a>
-                    <a class="budget-table-actions__link budget-table-actions__link-delete" href="{{ path('budget_delete_action', {'id': budget.id}) }}"><i class="fa-solid fa-trash"></i></a>
-                </td>
+                <td colspan="3">{{ 'There are no budgets set for your expenses - Create a new budget first' }}</td>
             </tr>
-        {% endfor %}
+        {% endif %}
         </tbody>
     </table>
 </div>

@@ -1,6 +1,6 @@
 {% extends 'layout.html.twig' %}
 
-{% block title %}Stats Expenses - Personal finance{% endblock %}
+{% block title %}Stats Expenses - {{ parent() }}{% endblock %}
 
 {% set theads = ['Name', 'Year', 'Balance', 'Total Earned', 'Total Spent'] %}
 

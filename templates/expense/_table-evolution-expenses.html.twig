@@ -1,12 +1,13 @@
-{% if budgetsCount > 0 %}
+{#{% if budgetsCount > 0 %}#}
     <hr class="wrapper__separator">
-    <h2>Evolution of your <span>net expenses</span> by budget</h2><br>
+    <h2>Evolution of your <span>net expenses</span> by budget</h2>
     <div class="info">
         <p class="info-month-table"><span>Info:</span> By the term of Net expenses, the value under each budget means the total expenses after subtracting the monthly budget.</p>
         <p class="info-month-table">If it's a <span class="word word-positive">positive</span> <span class="word word-green">green number</span>, it means you have saved money.</p>
         <p class="info-month-table">If it's a <span class="word word-negative">negative</span> <span class="word word-red">red number</span>, it means you have spent more than your budget.</p>
     </div>
-    {% for budgets in containerBudgets %}
+    {% if containerBudgets|length > 0 %}
+        {% for budgets in containerBudgets %}
         <table class="month-table">
             <thead>
             <tr>
@@ -33,4 +34,7 @@
             </tbody>
         </table>
     {% endfor %}
-{% endif %}
+    {% else %}
+        <p class="no-evolution-expenses">{{ 'There are no evolution because you havent entered transactions yet' }}</p>
+    {% endif %}
+{#{% endif %}#}

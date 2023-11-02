@@ -7,8 +7,3 @@
         <a class="navbar__link" href="https://tsehao.notion.site/How-to-use-this-app-0cfc8f98953846f4b34b4e4c9fe6fc0c">Tutorial</a>
     </nav>
 </div>
-<div class="wrapper-welcome">
-    {% if isLoginReferer is defined and isLoginReferer is same as true %}
-        <p class="welcome__user">Welcome <span class="welcome__user-username">{{ app.user.username ?? app.user.email }} {{ random(emojis) }}</span></p>
-    {% endif %}
-</div>
