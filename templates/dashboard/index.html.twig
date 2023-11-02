@@ -9,9 +9,6 @@
 
 {% block body %}
     <div class="wrapper">
-        {% if isLoginReferer is same as true %}
-            <h1>Welcome <span class="user-username">{{ app.user.username ?? app.user.email }} {{ random(emojis) }}</span></h1>
-        {% endif %}
         <div class="tables-view">
             {% include('transaction/_table.html.twig') with {
                 'transactionFilterForm' : transactionFilterForm,

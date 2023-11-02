@@ -28,6 +28,11 @@ p,td, th, select, input, button {
     text-align: center;
 }
 
-.user-username {
+.welcome-user {
+    width: 100%;
+    text-align: right;
+}
+
+.welcome-user__username {
     font-weight: 400;
 }
