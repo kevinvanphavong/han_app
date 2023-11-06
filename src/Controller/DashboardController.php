@@ -65,7 +65,9 @@ class DashboardController extends AbstractController
     #[Route('/form/creation', name: 'creation_form_page')]
     public function creation(Request $request): Response{
         $entityManager = $this->managerRegistry->getManager();
-        $monthForm = $this->createForm(MonthType::class);
+        $monthForm = $this->createForm(MonthType::class, new Month(), [
+            'budgets' => $this->budgetRepository->findBy(['user' => $this->getUser()])
+        ]);
         $monthForm->handleRequest($request);
         $budgetForm = $this->createForm(BudgetType::class);
         $budgetForm->handleRequest($request);

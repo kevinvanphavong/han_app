@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Form\MonthType;
+use App\Repository\BudgetRepository;
 use App\Repository\MonthRepository;
 use App\Repository\TransactionRepository;
 use Doctrine\Persistence\ManagerRegistry;
@@ -16,6 +17,7 @@ class MonthController extends AbstractController
     public function __construct(
        private ManagerRegistry $managerRegistry,
        private MonthRepository $monthRepository,
+       private BudgetRepository $budgetRepository,
        private TransactionRepository $transactionRepository,
     ) {}
     #[Route('/month/{id}/delete', name: 'month_delete_action')]
@@ -43,7 +45,9 @@ class MonthController extends AbstractController
     public function editMonth(Request $request, $id): Response
     {
         $month = $this->monthRepository->find($id);
-        $monthForm = $this->createForm(MonthType::class, $month);
+        $monthForm = $this->createForm(MonthType::class, $month, [
+            'budgets' => $this->budgetRepository->findBy(['user' => $this->getUser()])
+        ]);
         $monthForm->handleRequest($request);
 
         if ($monthForm->isSubmitted() && $monthForm->isValid()) {

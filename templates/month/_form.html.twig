@@ -1,5 +1,53 @@
 {% block monthForm %}
     <h2>{{ titleForm }}</h2>
     {{ form_start(monthForm) }}
+        {{ form_row(monthForm.date) }}
+
+
+        {{ form_label(monthForm.budgets) }}
+        <div class="month-form-row__input-budgets">
+            {% for choice in monthForm.budgets %}
+                <div class="budget-choice">
+                    {{ form_widget(choice) }}
+                    {{ form_label(choice) }}
+                </div>
+            {% endfor %}
+        </div>
+
+
+        {{ form_row(monthForm.save) }}
     {{ form_end(monthForm) }}
+
+    <style>
+        .month-form-row__input-budgets {
+            background-color: white;
+            display: flex;
+            grid-gap: 1em;
+            padding: 1em;
+            border-radius: 5px;
+            border: 1px solid grey;
+        }
+
+        .budget-choice {
+            position: relative;
+        }
+        .budget-choice label {
+            cursor: pointer;
+        }
+        .budget-choice input {
+            position: absolute;
+            transform: translateX(100%);
+            z-index: -1;
+        }
+
+        .month-form-row__input-budgets label {
+            padding: 0.3em 0.7em;
+            border-radius: 30px;
+            color: whitesmoke;
+            background: grey;
+        }
+        .month-form-row__input-budgets input[checked="checked"]+label {
+            background: forestgreen;
+        }
+    </style>
 {% endblock monthForm %}
