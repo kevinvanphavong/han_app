@@ -5,7 +5,7 @@
 @import "../styles/includes/_flash-messages.css";
 
 * {
-    box-sizing: content-box;
+    box-sizing: border-box;
     margin: 0;
     padding: 0;
     font-family: 'Quicksand', 'Montserrat', sans-serif;

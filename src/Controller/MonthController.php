@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Form\MonthType;
+use App\Helper\MonthDataHelper;
 use App\Repository\BudgetRepository;
 use App\Repository\MonthRepository;
 use App\Repository\TransactionRepository;
@@ -19,6 +20,7 @@ class MonthController extends AbstractController
        private MonthRepository $monthRepository,
        private BudgetRepository $budgetRepository,
        private TransactionRepository $transactionRepository,
+       private MonthDataHelper $monthDataHelper
     ) {}
     #[Route('/month/{id}/delete', name: 'month_delete_action')]
     public function deleteMonth($id): Response
@@ -61,5 +63,21 @@ class MonthController extends AbstractController
         return $this->render('month/edit.html.twig', [
             'monthForm' => $monthForm->createView(),
         ]);
+    }
+
+    #[Route('/month/refresh', name: 'months_amounts_refresh_action')]
+    public function refreshMonthsAmounts(Request $request): Response
+    {
+        $respone = $this->monthDataHelper->calculateTotalAmountsForMonthsFromUserTransactions(
+            $this->getUser(),
+            $this->managerRegistry->getManager()
+        );
+
+        if ($respone) {
+            $this->addFlash('success', 'Months amounts refreshed successfully');
+        } else {
+            $this->addFlash('error', 'Something went wrong while refreshing months amounts');
+        }
+        return $this->redirectToRoute('dashboard_page');
     }
 }

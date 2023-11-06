@@ -16,6 +16,7 @@ class MonthDataHelper
     const TRANSACTION_CREATE_ACTION = 'transaction_create_action';
     public function __construct(
         private TransactionRepository $transactionRepository,
+        private MonthRepository $monthRepository,
     ){}
 
     // This function is to set total amount spent and earned for a month
@@ -56,5 +57,23 @@ class MonthDataHelper
 
         $month->setTotalAmountSpent($totalAmountSpent);
         $month->setTotalAmountEarned($totalAmountEarned);
+    }
+
+    public function calculateTotalAmountsForMonthsFromUserTransactions(User $user, $entityManager): bool
+    {
+        $transactions = $this->transactionRepository->findBy(['user' => $user]);
+        $monthsDones = [];
+
+        foreach ($transactions as $transaction) {
+            $month = $transaction->getMonth();
+            if (!array_key_exists($month->getDate()->format('F'), $monthsDones)) {
+                $this->setTotalAmountSpentAndEarned($month, $user, null, null);
+                $monthsDones[$month->getDate()->format('F')] = $month;
+                $entityManager->persist($month);
+            }
+        }
+
+        $entityManager->flush();
+        return true;
     }
 }

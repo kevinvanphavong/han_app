@@ -5,11 +5,11 @@
     justify-content: space-between;
 }
 
-.transaction-view__header .button-action-container {
+.button-action-container {
     display: flex;
     justify-content: center;
     align-items: center;
-    grid-gap: 0.5em;
+    grid-gap: 0.25em;
 }
 
 .container-transaction-table {
@@ -90,6 +90,7 @@
     box-shadow: 2px 2px 10px lightgray;
 }
 
+.button-action-refresh,
 .button-action-filter {
     /*width: 50%;*/
     /*height: fit-content;*/
