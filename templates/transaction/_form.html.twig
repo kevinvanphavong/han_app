@@ -1,5 +1,103 @@
 {% block transactionForm %}
+    <style>
+        .transaction-form-label__new-budget {
+            display: flex;
+            align-items: center;
+            grid-gap: 0.5em;
+            padding: 0.5em 0.75em 0;
+            cursor: pointer;
+        }
+
+        .transaction-form-label__new_budget-icon {
+            font-size: 1.2em;
+        }
+        .transaction-form-label__new_budget-icon--unactive {
+            animation: rotate-unactive 0.5s ease-in-out;
+        }
+        .transaction-form-label__new_budget-icon--active {
+            animation: rotate-active 0.5s ease-in-out;
+        }
+
+        @keyframes rotate-active {
+            0% {
+                transform: rotate(0deg);
+            }
+            100% {
+                transform: rotate(90deg);
+            }
+        }
+
+        @keyframes rotate-unactive {
+            0% {
+                transform: rotate(90deg);
+            }
+            100% {
+                transform: rotate(0deg);
+            }
+        }
+
+        .transaction-form-row__new-budget--hidden {
+            display: none;
+        }
+        .transaction-form-row__new-budget--active {
+            display: flex;
+            flex-direction: column;
+            grid-gap: 1em;
+            padding: 0 2em;
+        }
+
+        .transaction-form-label__budget {
+            display: flex;
+        }
+
+        .transaction-form-label__budget span {
+            font-size: 0.8em;
+            color: grey;
+            align-self: center;
+            padding-left: 0.5em;
+        }
+    </style>
+
+
     <h2>{{ titleForm }}</h2>
     {{ form_start(transactionForm) }}
+        {{ form_row(transactionForm.date) }}
+        {{ form_row(transactionForm.month) }}
+        {{ form_row(transactionForm.name) }}
+        {{ form_row(transactionForm.amount) }}
+        {{ form_row(transactionForm.type) }}
+        <div class="transaction-form-row transaction-form-row__budget">
+            <div class="transaction-form-label__budget">
+                {{ form_label(transactionForm.budgetCategory) }}
+                <span>{{ form_help(transactionForm.budgetCategory) }}</span>
+            </div>
+            {{ form_widget(transactionForm.budgetCategory) }}
+        </div>
+
+        {% if transactionForm.newBudgetName is defined and transactionForm.newBudgetAmount is defined %}
+            <div class="transaction-form-label__new-budget js-transaction-form-label__new-budget transaction-form-label__new-budget--unactive">
+                <span class="js-transaction-form-label__new_budget-icon transaction-form-label__new_budget-icon transaction-form-label__new_budget-icon--unactive">
+                    <i class="fa-solid fa-circle-plus"></i>
+                </span>
+                <span>Create a <bold>new budget</bold></span>
+            </div>
+            <div class="transaction-form-row__new-budget--hidden js-transaction-form-row__new-budget">
+                {{ form_row(transactionForm.newBudgetName) }}
+                {{ form_row(transactionForm.newBudgetAmount) }}
+            </div>
+        {% endif %}
     {{ form_end(transactionForm) }}
+
+    <script>
+        let newBudgetButton = document.querySelector('.js-transaction-form-label__new-budget');
+        let newBudgetIcon = document.querySelector('.js-transaction-form-label__new_budget-icon');
+        let newBudgetRow = document.querySelector('.js-transaction-form-row__new-budget');
+        newBudgetButton.addEventListener('click', function() {
+          newBudgetRow.classList.toggle('transaction-form-row__new-budget--hidden')
+          newBudgetRow.classList.toggle('transaction-form-row__new-budget--active')
+
+          newBudgetIcon.classList.toggle('transaction-form-label__new_budget-icon--unactive')
+          newBudgetIcon.classList.toggle('transaction-form-label__new_budget-icon--active')
+        })
+    </script>
 {% endblock transactionForm %}

@@ -64,6 +64,7 @@ class DashboardController extends AbstractController
 
     #[Route('/form/creation', name: 'creation_form_page')]
     public function creation(Request $request): Response{
+        $entityManager = $this->managerRegistry->getManager();
         $monthForm = $this->createForm(MonthType::class);
         $monthForm->handleRequest($request);
         $budgetForm = $this->createForm(BudgetType::class);
@@ -73,6 +74,7 @@ class DashboardController extends AbstractController
         $transactionForm = $this->createForm(TransactionType::class, [], [
             'user' => $this->getUser(),
             'months' => $months,
+            'new_budget_is_enable' => true,
         ]);
         $transactionForm->handleRequest($request);
 
@@ -82,7 +84,7 @@ class DashboardController extends AbstractController
             || $monthForm->isSubmitted()
         ) {
             if ($transactionForm->isSubmitted() && $transactionForm->isValid()) {
-                $newTransaction = $this->transactionDataHelper->setNewDataTransaction($transactionForm);
+                $newTransaction = $this->transactionDataHelper->setNewDataTransaction($transactionForm, $this->getUser(), $entityManager);
                 $this->monthDataHelper->setTotalAmountSpentAndEarned(
                     $newTransaction->getMonth(),
                     $this->getUser(),
@@ -90,18 +92,18 @@ class DashboardController extends AbstractController
                     $newTransaction
                 );
                 $newTransaction->setUser($this->getUser());
-                $this->managerRegistry->getManager()->persist($newTransaction);
+                $entityManager->persist($newTransaction);
                 $this->addFlash('success', 'Transaction created successfully');
             } elseif ($monthForm->isSubmitted() && $monthForm->isValid()) {
                 $monthForm->getData()->setUser($this->getUser());
-                $this->managerRegistry->getManager()->persist($monthForm->getData());
+                $entityManager->persist($monthForm->getData());
                 $this->addFlash('success', 'Month created successfully');
             } elseif ($budgetForm->isSubmitted() && $budgetForm->isValid()) {
                 $budgetForm->getData()->setUser($this->getUser());
-                $this->managerRegistry->getManager()->persist($budgetForm->getData());
+                $entityManager->persist($budgetForm->getData());
                 $this->addFlash('success', 'Budget created successfully');
             }
-            $this->managerRegistry->getManager()->flush();
+            $entityManager->flush();
             return $this->redirectToRoute('dashboard_page');
         }
 

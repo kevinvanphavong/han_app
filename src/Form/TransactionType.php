@@ -22,6 +22,7 @@ class TransactionType extends AbstractType
     {
         $user = $options['user'];
         $months = $options['months'];
+        $newBudgetIsEnable = $options['new_budget_is_enable'];
 
         $builder
             ->add('date', DateType::class, [
@@ -66,11 +67,30 @@ class TransactionType extends AbstractType
                         ->where('b.user = :user')
                         ->setParameter('user', $user);
                 },
+                'help'           => '(Select existing budget or add new one)',
                 'label_attr'     => ['class' => 'transaction-form-row__label'],
                 'attr'           => ['class' => 'transaction-form-row__input'],
                 'row_attr'       => ['class' => 'transaction-form-row'],
-            ])
-            ->add('save', SubmitType::class, [
+                'required'       => false
+            ]);
+            if ($newBudgetIsEnable) {
+                $builder
+                ->add('newBudgetName', TextType::class, [
+                    'label'          => 'Define a name',
+                    'label_attr'     => ['class' => 'transaction-form-row__label'],
+                    'attr'           => ['class' => 'transaction-form-row__input'],
+                    'row_attr'       => ['class' => 'transaction-form-row'],
+                    'required'       => false
+                ])
+                ->add('newBudgetAmount', NumberType::class, [
+                    'label'          => 'Enter an amount',
+                    'label_attr'     => ['class' => 'transaction-form-row__label'],
+                    'attr'           => ['class' => 'transaction-form-row__input'],
+                    'row_attr'       => ['class' => 'transaction-form-row'],
+                    'required'       => false
+                ]);
+            }
+            $builder->add('save', SubmitType::class, [
                 'label'         => 'Save',
                 'attr'           => ['class' => 'transaction-form-row__input'],
                 'row_attr'       => ['class' => 'transaction-form-row'],
@@ -84,6 +104,7 @@ class TransactionType extends AbstractType
             'data_class' => null,
             'user' => null,
             'months' => null,
+            'new_budget_is_enable' => null,
             'attr' => ['class' => 'transaction-form', 'id' => 'transaction-form']
         ]);
     }

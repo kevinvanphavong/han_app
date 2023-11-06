@@ -2,17 +2,22 @@
 
 namespace App\Helper;
 
+use App\Entity\Budget;
 use App\Entity\Transaction;
+use App\Entity\User;
+use App\Form\TransactionType;
 use App\Repository\TransactionRepository;
+use Doctrine\Persistence\ManagerRegistry;
 
 class TransactionDataHelper
 {
     public function __construct(private TransactionRepository $transactionRepository)
     {}
 
-    public function setNewDataTransaction($transactionForm): Transaction
+    public function setNewDataTransaction($transactionForm, User $user, $entityManager): Transaction
     {
         $transactionFormData = $transactionForm->getData();
+
         $day = $transactionFormData['date']->format('d');
         $month = $transactionFormData['month']->getDate()->format('F');
         $year = $transactionFormData['month']->getDate()->format('Y');
@@ -23,7 +28,17 @@ class TransactionDataHelper
         $transaction->setMonth($transactionFormData['month']);
         $transaction->setAmount($transactionFormData['amount']);
         $transaction->setType($transactionFormData['type']);
-        $transaction->setBudgetCategory($transactionFormData['budgetCategory']);
+
+        if ($transactionFormData['budgetCategory'] !== null) {
+            $transaction->setBudgetCategory($transactionFormData['budgetCategory']);
+        } elseif ($transactionFormData['newBudgetName'] !== null) {
+            $budget = new Budget();
+            $budget->setName($transactionFormData['newBudgetName']);
+            $budget->setAmount($transactionFormData['newBudgetAmount']);
+            $budget->setUser($user);
+            $transaction->setBudgetCategory($budget);
+            $entityManager->persist($budget);
+        }
 
         return $transaction;
     }

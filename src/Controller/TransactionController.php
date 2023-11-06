@@ -54,6 +54,7 @@ class TransactionController extends AbstractController
             'user' => $this->getUser(),
             'months' => $this->monthRepository->findBy(['user' => $this->getUser()]),
             'data_class' => Transaction::class,
+            'new_budget_is_enable' => false
         ]);
         $transactionForm->handleRequest($request);
 
