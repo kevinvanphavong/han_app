@@ -71,7 +71,7 @@ class TransactionType extends AbstractType
                 'label_attr'     => ['class' => 'transaction-form-row__label'],
                 'attr'           => ['class' => 'transaction-form-row__input'],
                 'row_attr'       => ['class' => 'transaction-form-row'],
-                'required'       => false
+                'required'       => !$newBudgetIsEnable
             ]);
             if ($newBudgetIsEnable) {
                 $builder

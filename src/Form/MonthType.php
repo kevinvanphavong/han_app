@@ -40,6 +40,7 @@ class MonthType extends AbstractType
                 'label_attr'     => ['class' => 'month-form-row__label'],
                 'attr'           => ['class' => 'month-form-row__input month-form-row__input-budgets'],
                 'row_attr'       => ['class' => 'month-form-row'],
+                'required'       => false,
             ])
             ->add('save', SubmitType::class, [
                 'label'         => 'Save',

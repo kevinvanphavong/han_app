@@ -87,6 +87,10 @@ class DashboardController extends AbstractController
         ) {
             if ($transactionForm->isSubmitted() && $transactionForm->isValid()) {
                 $newTransaction = $this->transactionDataHelper->setNewDataTransaction($transactionForm, $this->getUser(), $entityManager);
+                if (is_array($newTransaction)) {
+                    $this->addFlash('error', $newTransaction['errorMessage']);
+                    return $this->redirectToRoute('creation_form_page');
+                }
                 $this->monthDataHelper->setTotalAmountSpentAndEarned(
                     $newTransaction->getMonth(),
                     $this->getUser(),

@@ -11,10 +11,14 @@ use Doctrine\Persistence\ManagerRegistry;
 
 class TransactionDataHelper
 {
+    private const NO_BUDGET_CHOSEN = 'NO_BUDGET_CHOSEN';
+    private const NO_BUDGET_CHOSEN_CODE = 444;
+    private const NEW_BUDGET_NOT_COMPLETED = 'NEW_BUDGET_NOT_COMPLETED';
+    private const NEW_BUDGET_NOT_COMPLETED_CODE = 555;
     public function __construct(private TransactionRepository $transactionRepository)
     {}
 
-    public function setNewDataTransaction($transactionForm, User $user, $entityManager): Transaction
+    public function setNewDataTransaction($transactionForm, User $user, $entityManager): Transaction|array
     {
         $transactionFormData = $transactionForm->getData();
 
@@ -28,6 +32,24 @@ class TransactionDataHelper
         $transaction->setMonth($transactionFormData['month']);
         $transaction->setAmount($transactionFormData['amount']);
         $transaction->setType($transactionFormData['type']);
+
+        if ($transactionFormData['budgetCategory'] === null
+            && $transactionFormData['newBudgetName'] === null
+            && $transactionFormData['newBudgetAmount'] === null
+        ) {
+            return [
+                'errorCode' => self::NO_BUDGET_CHOSEN_CODE,
+                'errorMessage' => 'You have to add or create a budget for this transaction',
+            ];
+        } elseif (
+            $transactionFormData['newBudgetName'] === null && $transactionFormData['newBudgetAmount'] !== null
+            || $transactionFormData['newBudgetName'] !== null && $transactionFormData['newBudgetAmount'] === null
+        ) {
+            return [
+                'errorCode' => self::NEW_BUDGET_NOT_COMPLETED_CODE,
+                'errorMessage' => "You didn't complete the new budget informations (name and amount)",
+            ];
+        }
 
         if ($transactionFormData['budgetCategory'] !== null) {
             $transaction->setBudgetCategory($transactionFormData['budgetCategory']);

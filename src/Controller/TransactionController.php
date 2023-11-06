@@ -59,6 +59,10 @@ class TransactionController extends AbstractController
         $transactionForm->handleRequest($request);
 
         if ($transactionForm->isSubmitted() && $transactionForm->isValid()) {
+            $day = $transactionForm->getData()->getDate()->format('d');
+            $monthYear = $transactionForm->getData()->getMonth()->getDate()->format('F Y');
+            $transaction->setDate(new \DateTime($day . ' ' . $monthYear));
+
             $entityManager = $this->managerRegistry->getManager();
             $this->monthDataHelper->setTotalAmountSpentAndEarned(
                 $transaction->getMonth(),
