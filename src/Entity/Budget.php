@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\BudgetRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: BudgetRepository::class)]
@@ -22,6 +24,14 @@ class Budget
     #[ORM\ManyToOne(inversedBy: 'budgets')]
     #[ORM\JoinColumn(nullable: false)]
     private ?User $user = null;
+
+    #[ORM\ManyToMany(targetEntity: Month::class, mappedBy: 'budgets')]
+    private Collection $months;
+
+    public function __construct()
+    {
+        $this->months = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -60,6 +70,33 @@ class Budget
     public function setUser(?User $user): static
     {
         $this->user = $user;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Month>
+     */
+    public function getMonths(): Collection
+    {
+        return $this->months;
+    }
+
+    public function addMonth(Month $month): static
+    {
+        if (!$this->months->contains($month)) {
+            $this->months->add($month);
+            $month->addBudget($this);
+        }
+
+        return $this;
+    }
+
+    public function removeMonth(Month $month): static
+    {
+        if ($this->months->removeElement($month)) {
+            $month->removeBudget($this);
+        }
 
         return $this;
     }

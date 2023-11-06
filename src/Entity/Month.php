@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\MonthRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -29,6 +31,14 @@ class Month
 
     #[ORM\Column(type: Types::DATE_MUTABLE)]
     private ?\DateTimeInterface $date = null;
+
+    #[ORM\ManyToMany(targetEntity: Budget::class, inversedBy: 'months')]
+    private Collection $budgets;
+
+    public function __construct()
+    {
+        $this->budgets = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -91,6 +101,30 @@ class Month
     public function setDate(\DateTimeInterface $date): static
     {
         $this->date = $date;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Budget>
+     */
+    public function getBudgets(): Collection
+    {
+        return $this->budgets;
+    }
+
+    public function addBudget(Budget $budget): static
+    {
+        if (!$this->budgets->contains($budget)) {
+            $this->budgets->add($budget);
+        }
+
+        return $this;
+    }
+
+    public function removeBudget(Budget $budget): static
+    {
+        $this->budgets->removeElement($budget);
 
         return $this;
     }
