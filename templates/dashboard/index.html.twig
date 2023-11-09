@@ -15,9 +15,10 @@
         <div class="tables-view">
             {% include('transaction/_table.html.twig') with {
                 'transactionFilterForm' : transactionFilterForm,
-                'transactionTableTitle' : '💸 Lastest transactions',
+                'transactionTableTitle' : '💸 ' ~ transactionsLimitResults ~ ' Lastest transactions',
                 'seeMoreButtonActive'   : true,
                 'urlResetFilter'        : path('dashboard_page'),
+                'transactionLimitResults' : transactionsLimitResults,
             } %}
             <hr class="wrapper__separator">
             {% include('month/_table.html.twig') %}

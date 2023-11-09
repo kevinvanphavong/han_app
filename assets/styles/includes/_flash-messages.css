@@ -1,12 +1,12 @@
 .flash-message {
     position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
+    bottom: 1em;
+    left: 1em;
     height: fit-content;
     padding: 1em;
     color: whitesmoke;
     z-index: 1;
+    border-radius: 5px;
     &.flash-error {
         background-color: rgba(194, 21, 21, 0.9);
         border: 2px solid rgb(194, 21, 21);

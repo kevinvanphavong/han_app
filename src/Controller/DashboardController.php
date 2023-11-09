@@ -23,6 +23,7 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 #[IsGranted('ROLE_USER')]
 class DashboardController extends AbstractController
 {
+    private const TRANSACTIONS_TABLE_LIMIT_RESULTS = 20;
     private const TABLE_MAX_COLUMNS = 3;
 
     public function __construct(
@@ -46,13 +47,14 @@ class DashboardController extends AbstractController
         ]);
         $transactionFilterForm->remove('limit');
         $transactionFilterForm->handleRequest($request);
-        $transactions = $this->transactionRepository->findBy(['user' => $user], ['month' => 'DESC'], 20);
+        $transactions = $this->transactionRepository->findBy(['user' => $user], ['month' => 'DESC'], self::TRANSACTIONS_TABLE_LIMIT_RESULTS);
         if ($transactionFilterForm->isSubmitted() && $transactionFilterForm->isValid()) {
             $transactions = $this->transactionDataHelper->getTransactionsWithFilters($transactionFilterForm->getData(), $user);
             $this->addFlash('success', 'Filters applied successfully');
         }
 
         return $this->render('dashboard/index.html.twig', [
+            'transactionsLimitResults' => self::TRANSACTIONS_TABLE_LIMIT_RESULTS,
             'transactions' => $transactions,
             'months' => $this->monthRepository->findBy(['user' => $user], ['date' => 'DESC']),
             'budgets' => $this->budgetRepository->findBy(['user' => $user]),
