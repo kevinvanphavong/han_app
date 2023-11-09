@@ -61,12 +61,16 @@
     .transaction-type--spent {
         background-color: #B0413E;
     }
+
+    [data-type="budget"] {
+        max-width: 100px;
+    }
 }
 
 .budget-table-actions,
 .month-table-actions,
 .transaction-table-actions {
-    width: 90px;
+    width: 100px;
 }
 
 .budget-table-actions__link,
