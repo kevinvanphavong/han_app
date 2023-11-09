@@ -73,7 +73,7 @@ button.transaction-form-row__input {
 .wrapper {
     margin: 2em auto 2em;
     width: 80%;
-    max-width: 800px;
+    max-width: 1000px;
     display: flex;
     flex-direction: column;
     grid-gap: 1em;

@@ -62,17 +62,8 @@
         background-color: #B0413E;
     }
 
-    [data-type] {
+    & td {
         word-wrap: break-word;
-    }
-
-    [data-type="date"] {
-        max-width: 80px;
-    }
-
-    [data-type="budget"],
-    [data-type="name"] {
-        max-width: 130px;
     }
 }
 
@@ -141,7 +132,6 @@
     flex-direction: column;
     grid-gap: 1em;
     width: 100%;
-    max-width: 800px;
 }
 
 table {
