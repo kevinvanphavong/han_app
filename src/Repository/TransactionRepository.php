@@ -40,6 +40,7 @@ class TransactionRepository extends ServiceEntityRepository
                     break;
             }
         }
+        $queryBuilder->addOrderBy('t.date', 'DESC');
 
         return $queryBuilder->getQuery()->getResult();
     }

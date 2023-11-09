@@ -47,7 +47,7 @@ class DashboardController extends AbstractController
         ]);
         $transactionFilterForm->remove('limit');
         $transactionFilterForm->handleRequest($request);
-        $transactions = $this->transactionRepository->findBy(['user' => $user], ['month' => 'DESC'], self::TRANSACTIONS_TABLE_LIMIT_RESULTS);
+        $transactions = $this->transactionRepository->findBy(['user' => $user], ['date' => 'DESC'], self::TRANSACTIONS_TABLE_LIMIT_RESULTS);
         if ($transactionFilterForm->isSubmitted() && $transactionFilterForm->isValid()) {
             $transactions = $this->transactionDataHelper->getTransactionsWithFilters($transactionFilterForm->getData(), $user);
             $this->addFlash('success', 'Filters applied successfully');
