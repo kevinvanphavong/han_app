@@ -106,7 +106,9 @@ button.transaction-form-row__input {
 .month-form-row__input-budgets {
     background-color: white;
     display: flex;
-    grid-gap: 1em;
+    flex-wrap: wrap;
+    grid-column-gap: 1em;
+    grid-row-gap: 1.5em;
     padding: 1em;
     border-radius: 5px;
     border: 1px solid grey;
