@@ -27,7 +27,7 @@
             <tr>
                 <th>Month</th>
                 <th>Date</th>
-                <th>Name</th>
+                <th data-type="name">Name</th>
                 <th>Type</th>
                 <th>Amount</th>
                 <th data-type="budget">Budget</th>
@@ -40,7 +40,7 @@
                 <tr>
                     <td>{{ transaction.date|date('F') }}</td>
                     <td>{{ transaction.date|date("d M Y") }}</td>
-                    <td>{{ transaction.name }}</td>
+                    <td data-type="name">{{ transaction.name }}</td>
                     <td><p class="transaction-type transaction-type--{{ transaction.type.name|lower }}">{{ transaction.type.name }}</p></td>
                     <td>{{ (transaction.amount ?? 0) ~ '€' }}</td>
                     <td data-type="budget">{{ transaction.budgetCategory.name }}</td>
