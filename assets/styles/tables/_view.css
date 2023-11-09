@@ -65,11 +65,14 @@
     [data-type] {
         word-wrap: break-word;
     }
-    [data-type="budget"] {
-        max-width: 100px;
+
+    [data-type="date"] {
+        max-width: 80px;
     }
+
+    [data-type="budget"],
     [data-type="name"] {
-        max-width: 120px;
+        max-width: 130px;
     }
 }
 
