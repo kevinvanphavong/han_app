@@ -30,7 +30,7 @@
                 <th>Name</th>
                 <th>Type</th>
                 <th>Amount</th>
-                <th>Budget</th>
+                <th data-type="budget">Budget</th>
                 <th class="transaction-table-actions">Actions</th>
             </tr>
         </thead>
@@ -43,7 +43,7 @@
                     <td>{{ transaction.name }}</td>
                     <td><p class="transaction-type transaction-type--{{ transaction.type.name|lower }}">{{ transaction.type.name }}</p></td>
                     <td>{{ (transaction.amount ?? 0) ~ '€' }}</td>
-                    <td>{{ transaction.budgetCategory.name }}</td>
+                    <td data-type="budget">{{ transaction.budgetCategory.name }}</td>
                     <td class="transaction-table-actions">
                         <a class="transaction-table-actions__link transaction-table-actions__link-edit" href="{{ path('transaction_edit_action', {'id': transaction.id}) }}"><i class="fa-solid fa-pen-to-square"></i></a>
                         <a class="transaction-table-actions__link transaction-table-actions__link-delete" href="{{ path('transaction_delete_action', {'id': transaction.id}) }}"><i class="fa-solid fa-trash"></i></a>
