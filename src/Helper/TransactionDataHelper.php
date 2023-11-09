@@ -69,14 +69,14 @@ class TransactionDataHelper
     {
         $transactionsSumByBudgetForMonths = [];
         foreach ($months as $month) {
-            $transactionsSumByBudgetForMonths[$month->getDate()->format('F')] = [];
+            $transactionsSumByBudgetForMonths[$month->getDate()->format('F-Y')] = [];
             foreach($transactions as $transaction) {
                 if ($transaction->getType()->getName() === \App\Entity\TransactionType::TYPE_SPENT_NAME && $transaction->getMonth()->getDate()->format('F') === $month->getDate()->format('F')) {
                     $budgetName = $transaction->getBudgetCategory()->getName();
-                    if (!isset($transactionsSumByBudgetForMonths[$month->getDate()->format('F')][$budgetName])) {
-                        $transactionsSumByBudgetForMonths[$month->getDate()->format('F')][$budgetName] = ['amount' => $transaction->getAmount(), 'ratio' => 0];
+                    if (!isset($transactionsSumByBudgetForMonths[$month->getDate()->format('F-Y')][$budgetName])) {
+                        $transactionsSumByBudgetForMonths[$month->getDate()->format('F-Y')][$budgetName] = ['amount' => $transaction->getAmount(), 'ratio' => 0];
                     } else {
-                        $transactionsSumByBudgetForMonths[$month->getDate()->format('F')][$budgetName]['amount'] += $transaction->getAmount();
+                        $transactionsSumByBudgetForMonths[$month->getDate()->format('F-Y')][$budgetName]['amount'] += $transaction->getAmount();
                     }
                 }
             }
