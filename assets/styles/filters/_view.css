@@ -22,12 +22,7 @@
     display: grid;
     grid-template-columns: 50% 50%;
     grid-template-rows: 1fr 1fr 1fr;
-    grid-gap: 0;
-    row-gap: 1em;
-}
-
-.transaction-filter-form-row:nth-child(odd) {
-    padding-right: 1em;
+    grid-gap: 1em;
 }
 
 .filters-container {
