@@ -101,10 +101,10 @@ class TransactionDataHelper
         foreach ($transactionsSumByBudgetForMonths as $monthName => $transactionsSumByBudget) {
             foreach($budgets as $budget) {
                 $budgetName = $budget->getName();
-                if (isset($transactionsSumByBudget[$budgetName])) {
+                if (isset($transactionsSumByBudget[$budgetName]) && $transactionsSumByBudget[$budgetName]['amount'] < 0) {
                     $transactionsSumByBudgetForMonths[$monthName][$budgetName] = [
                         'amount' => $transactionsSumByBudget[$budgetName]['amount'],
-                        'ratio' => $transactionsSumByBudget[$budgetName]['amount'] / $budget->getAmount() * 100,
+                        'ratio' => ($transactionsSumByBudget[$budgetName]['amount']*-1) / $budget->getAmount() * 100,
                     ];
                 } else {
                     $transactionsSumByBudgetForMonths[$monthName][$budgetName] = [
@@ -122,14 +122,12 @@ class TransactionDataHelper
     {
         $total = [];
         foreach ($transactions as $transaction) {
-            if ($transaction->getType()->getName() === \App\Entity\TransactionType::TYPE_SPENT_NAME) {
                 $budgetName = $transaction->getBudgetCategory()->getName();
                 if (!isset($total[$budgetName])) {
                     $total[$budgetName] = $transaction->getAmount();
                 } else {
                     $total[$budgetName] += $transaction->getAmount();
                 }
-            }
         }
 
         return $total;

@@ -134,12 +134,13 @@ class DashboardController extends AbstractController
         $budgets = $budgetRepository->findBy(['user' => $user]);
         $transactionsSumByBudgetForMonths = $this->transactionDataHelper->getTransactionsSumsForBudgetGroupByMonth($transactions, $months, $budgets);
         $transactionsSumByBudget = $this->transactionDataHelper->getTransactionsTotalByBudget($transactions);
+        $containerBudgets = array_chunk($budgets, self::TABLE_MAX_COLUMNS);
 
         return $this->render('dashboard/stats-expenses.html.twig', [
             'transactions' => $transactions,
             'months' => $months,
             'budgetsCount' => count($budgets),
-            'containerBudgets' => array_chunk($budgets, self::TABLE_MAX_COLUMNS),
+            'containerBudgets' => $containerBudgets,
             'budgetsNames' => array_map(function ($budget) {
                 return $budget->getName();
             }, $budgets),
