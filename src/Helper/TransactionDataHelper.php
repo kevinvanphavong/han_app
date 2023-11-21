@@ -70,13 +70,15 @@ class TransactionDataHelper
         $transactionsSumByBudgetForMonths = [];
         foreach ($months as $month) {
             $transactionsSumByBudgetForMonths[$month->getDate()->format('F-Y')] = [];
+            /** @var Transaction $transaction */
             foreach($transactions as $transaction) {
-                if ($transaction->getType()->getName() === \App\Entity\TransactionType::TYPE_SPENT_NAME && $transaction->getMonth()->getDate()->format('F') === $month->getDate()->format('F')) {
+                if ($transaction->getMonth()->getDate()->format('F') === $month->getDate()->format('F')) {
                     $budgetName = $transaction->getBudgetCategory()->getName();
+                    $amount = $this->getAmountTransactionByType($transaction);
                     if (!isset($transactionsSumByBudgetForMonths[$month->getDate()->format('F-Y')][$budgetName])) {
-                        $transactionsSumByBudgetForMonths[$month->getDate()->format('F-Y')][$budgetName] = ['amount' => $transaction->getAmount(), 'ratio' => 0];
+                        $transactionsSumByBudgetForMonths[$month->getDate()->format('F-Y')][$budgetName] = ['amount' => $amount];
                     } else {
-                        $transactionsSumByBudgetForMonths[$month->getDate()->format('F-Y')][$budgetName]['amount'] += $transaction->getAmount();
+                        $transactionsSumByBudgetForMonths[$month->getDate()->format('F-Y')][$budgetName]['amount'] += $amount;
                     }
                 }
             }
@@ -84,6 +86,14 @@ class TransactionDataHelper
         $this->calculateRatioFromSumTransactionWithBudget($transactionsSumByBudgetForMonths, $budgets);
 
         return $transactionsSumByBudgetForMonths;
+    }
+
+    private function getAmountTransactionByType($transaction): float
+    {
+        if ($transaction->getType()->getName() === \App\Entity\TransactionType::TYPE_SPENT_NAME) {
+            return $transaction->getAmount() * -1;
+        }
+        return $transaction->getAmount();
     }
 
     private function calculateRatioFromSumTransactionWithBudget(&$transactionsSumByBudgetForMonths, $budgets): array

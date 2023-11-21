@@ -24,7 +24,8 @@
                         {% set ratio = transaction[budget.name].ratio %}
                         <p class="budget-ratio {{ ratio > 100 ? 'over' : 'under' }}">
                             ({{ ratio|round(2, 'floor') ~ '%' }})
-                        </p></td>
+                        </p>
+                        </td>
                     {% endfor %}
                 </tr>
             {% endfor %}
