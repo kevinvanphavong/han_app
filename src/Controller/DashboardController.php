@@ -40,9 +40,10 @@ class DashboardController extends AbstractController
         Request $request,
     ): Response {
         $user = $this->getUser();
+        $months = $this->monthRepository->findBy(['user' => $user], ['date' => 'DESC']);
         $transactionFilterForm = $this->createForm(TransactionFilterType::class, [], [
             'user' => $user,
-            'months' => $this->monthRepository->findBy(['user' => $user], ['date' => 'DESC']),
+            'months' => $months,
             'url' => $this->generateUrl('dashboard_page'),
         ]);
         $transactionFilterForm->remove('limit');
@@ -52,8 +53,10 @@ class DashboardController extends AbstractController
             $transactions = $this->transactionDataHelper->getTransactionsWithFilters($transactionFilterForm->getData(), $user);
             $this->addFlash('success', 'Filters applied successfully');
         }
+        $sumBudgetsAmountsByMonths = $this->transactionDataHelper->getTotalsBudgetsAmountsByMonths($transactions, $months);
 
         return $this->render('dashboard/index.html.twig', [
+            'sumBudgetsAmountsByMonths' => $sumBudgetsAmountsByMonths,
             'transactionsLimitResults' => self::TRANSACTIONS_TABLE_LIMIT_RESULTS,
             'transactions' => $transactions,
             'months' => $this->monthRepository->findBy(['user' => $user], ['date' => 'DESC']),
@@ -145,7 +148,8 @@ class DashboardController extends AbstractController
                 return $budget->getName();
             }, $budgets),
             'transactionsSum' => $transactionsSumByBudgetForMonths,
-            'transactionsSumByBudget' => $transactionsSumByBudget
+            'transactionsSumByBudget' => $transactionsSumByBudget,
+            'sumBudgetsAmountsByMonths' => $sumBudgetsAmountsByMonths,
         ]);
     }
 
