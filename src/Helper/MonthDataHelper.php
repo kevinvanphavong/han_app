@@ -6,8 +6,6 @@ use App\Entity\Month;
 use App\Entity\Transaction;
 use App\Entity\TransactionType;
 use App\Entity\User;
-use App\Repository\BudgetRepository;
-use App\Repository\MonthRepository;
 use App\Repository\TransactionRepository;
 
 class MonthDataHelper
@@ -16,11 +14,10 @@ class MonthDataHelper
     const TRANSACTION_CREATE_ACTION = 'transaction_create_action';
     public function __construct(
         private TransactionRepository $transactionRepository,
-        private MonthRepository $monthRepository,
     ){}
 
     // This function is to set total amount spent and earned for a month
-    // This will be calculate every time I create a new transaction
+    // This will be calculated every time I create a new transaction
     public function setTotalAmountSpentAndEarned(Month $month, User $user, string $action = null, ?Transaction $currentTransaction = null): void
     {
         $totalAmountEarned = 0;
@@ -55,6 +52,7 @@ class MonthDataHelper
             }
         }
 
+        $month->setBalance($totalAmountEarned - $totalAmountSpent);
         $month->setTotalAmountSpent($totalAmountSpent);
         $month->setTotalAmountEarned($totalAmountEarned);
     }

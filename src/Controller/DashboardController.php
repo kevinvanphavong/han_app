@@ -149,7 +149,6 @@ class DashboardController extends AbstractController
             }, $budgets),
             'transactionsSum' => $transactionsSumByBudgetForMonths,
             'transactionsSumByBudget' => $transactionsSumByBudget,
-            'sumBudgetsAmountsByMonths' => $sumBudgetsAmountsByMonths,
         ]);
     }
 
