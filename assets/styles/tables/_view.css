@@ -84,6 +84,11 @@
     padding-left: 0.5em;
 }
 
+.budget-table tr[data-is-salary="1"] {
+    color: lightgoldenrodyellow;
+    background: goldenrod;
+}
+
 .button-action {
     padding: 0.5em 1em;
     width: fit-content;

@@ -134,7 +134,7 @@ class DashboardController extends AbstractController
         $user = $this->getUser();
         $transactions = $transactionRepository->findBy(['user' => $user]);
         $months = $monthRepository->findBy(['user' => $user], ['date' => 'DESC']);
-        $budgets = $budgetRepository->findBy(['user' => $user]);
+        $budgets = $budgetRepository->findBudgetsByUserAndNotSalary($user);
         $transactionsSumByBudgetForMonths = $this->transactionDataHelper->getTransactionsSumsForBudgetGroupByMonth($transactions, $months, $budgets);
         $transactionsSumByBudget = $this->transactionDataHelper->getTransactionsTotalByBudget($transactions);
         $containerBudgets = array_chunk($budgets, self::TABLE_MAX_COLUMNS);

@@ -22,7 +22,18 @@
     padding: 0.5em;
     border: 1px solid var(--grey-color-darker);
     border-radius: 5px;
+
 }
+
+.budget-form-row.budget-form-row-is-salary {
+    display: flex;
+    flex-direction: row;
+    .budget-form-row__label,
+    .budget-form-row__input {
+        width: fit-content;
+    }
+}
+
 button.month-form-row__input,
 button.budget-form-row__input,
 button.transaction-form-row__input {

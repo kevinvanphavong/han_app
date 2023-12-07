@@ -14,7 +14,8 @@
         <tbody>
         {% if budgets|length > 0 %}
             {% for budget in budgets %}
-                <tr>
+                {% set isSalary = budget.isSalary %}
+                <tr data-is-salary="{{ isSalary is same as (true) }}">
                     <td>{{ budget.name }}</td>
                     <td>{{ (budget.amount ?? 0) ~ '€' }}</td>
                     <td class="budget-table-actions">
