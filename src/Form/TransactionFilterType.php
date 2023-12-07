@@ -88,7 +88,7 @@ class TransactionFilterType extends AbstractType
                 'required'       => false,
             ])
             ->add('save', SubmitType::class, [
-                'label'         => 'Save filter',
+                'label'         => 'Save',
                 'attr'           => ['class' => 'button-action button-action-filter js-button-action-save', 'data-href' => $url],
                 'row_attr'       => ['class' => 'transaction-filter-form-row'],
             ])
