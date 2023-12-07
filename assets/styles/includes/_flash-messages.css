@@ -4,7 +4,7 @@
     left: 1em;
     height: fit-content;
     padding: 1em;
-    color: whitesmoke;
+    color: var(--white-color);
     z-index: 1;
     border-radius: 5px;
     &.flash-error {

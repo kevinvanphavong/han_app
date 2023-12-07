@@ -1,0 +1,24 @@
+* {
+    --white-color: whitesmoke;
+    --black-color: #333;
+
+    --grey-color-lighter: #ddd;
+    --grey-color: #999;
+    --grey-color-darker: grey;
+
+    --table-line-even: #d0d0d0;
+
+    --green-color: forestgreen;
+    --green-color-darker: #417e3c;
+
+    --red-color: #B0413E;
+
+    --orange-color: #e56b35;
+    --orange-color-darker: #e56b35;
+
+    --blue-color: #225f8b;
+    --blue-color-darker: #1d5277;
+
+    --shadow-color: lightgray;
+}
+

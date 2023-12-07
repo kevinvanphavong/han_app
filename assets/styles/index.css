@@ -1,3 +1,4 @@
+@import "variables.css";
 @import "../styles/tables/_view.css";
 @import "../styles/forms/_creation.css";
 @import "../styles/filters/_view.css";
@@ -14,7 +15,7 @@
 
 body {
     padding: 0 1em 1em;
-    background: whitesmoke;
+    background: var(--white-color);
 }
 
 p,td, th, select, input, button {

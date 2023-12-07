@@ -20,7 +20,7 @@
 .budget-form-row__input,
 .transaction-form-row__input {
     padding: 0.5em;
-    border: 1px solid grey;
+    border: 1px solid var(--grey-color-darker);
     border-radius: 5px;
 }
 button.month-form-row__input,
@@ -42,7 +42,7 @@ button.transaction-form-row__input {
 .month-form-row__input#month_date select,
 .transaction-form-row__input#transaction_date select {
     padding: 0.5em;
-    border: 1px solid grey;
+    border: 1px solid var(--grey-color-darker);
     border-radius: 5px;
     width: 100%;
 }
@@ -56,18 +56,18 @@ button.transaction-form-row__input {
 .budget-form-row #budget_save,
 .transaction-form-row #transaction_save {
     cursor: pointer;
-    background-color: forestgreen;
-    color: whitesmoke;
+    background-color: var(--green-color);
+    color: var(--white-color);
     transition: all 0.5s;
     width: 50%;
     margin: 0 auto;
-    box-shadow: 2px 2px 10px lightgray;
+    box-shadow: 2px 2px 10px var(--shadow-color);
 }
 
 .month-form-row #month_save:hover,
 .budget-form-row #budget_save:hover,
 .transaction-form-row #transaction_save:hover {
-    background-color: #1c721c;
+    background-color: var(--green-color-darker);
 }
 
 .wrapper {
@@ -80,21 +80,21 @@ button.transaction-form-row__input {
 }
 
 .wrapper .button-back-dashboard {
-    color: #282828;
+    color: var(--black-color);
     text-decoration: none;
     width: fit-content;
     padding: 0.5em 1em;
-    border: 1px solid #282828;
+    border: 1px solid var(--black-color);
     border-radius: 5px;
-    background-color: #e5e5e5;
+    background-color: var(--white-color);
     transition: all 0.5s ease;
     margin-bottom: 2em;
-    box-shadow: 2px 2px 10px lightgray;
+    box-shadow: 2px 2px 10px var(--shadow-color);
 }
 
 .wrapper .button-back-dashboard:hover {
-    color: whitesmoke;
-    background-color: #282828;
+    color: var(--white-color);
+    background-color: var(--black-color);
 }
 
 .wrapper__separator {
@@ -104,14 +104,14 @@ button.transaction-form-row__input {
 
 /*Month Form*/
 .month-form-row__input-budgets {
-    background-color: white;
+    background-color: var(--white-color);
     display: flex;
     flex-wrap: wrap;
     grid-column-gap: 1em;
     grid-row-gap: 1.5em;
     padding: 1em;
     border-radius: 5px;
-    border: 1px solid grey;
+    border: 1px solid var(--grey-color-darker);
 }
 
 .budget-choice {
@@ -129,14 +129,14 @@ button.transaction-form-row__input {
 .month-form-row__input-budgets label {
     padding: 0.3em 0.7em;
     border-radius: 30px;
-    color: whitesmoke;
-    background: grey;
+    color: var(--white-color);
+    background: var(--grey-color-darker);
 }
 .month-form-row__input-budgets label.budget-choice__label--checked,
 .month-form-row__input-budgets input[checked="checked"]+label {
-    background: forestgreen;
+    background: var(--green-color);
 }
 .month-form-row__input-budgets label.budget-choice__label--unchecked {
-    background: grey !important;
+    background: var(--grey-color-darker) !important;
 }
 /*Month Form*/
