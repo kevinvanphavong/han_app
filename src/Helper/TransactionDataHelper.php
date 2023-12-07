@@ -104,7 +104,12 @@ class TransactionDataHelper
                 if (isset($transactionsSumByBudget[$budgetName]) && $transactionsSumByBudget[$budgetName]['amount'] < 0) {
                     $transactionsSumByBudgetForMonths[$monthName][$budgetName] = [
                         'amount' => $transactionsSumByBudget[$budgetName]['amount'],
-                        'ratio' => ($transactionsSumByBudget[$budgetName]['amount']*-1) / $budget->getAmount() * 100,
+                        'ratio' => ($transactionsSumByBudget[$budgetName]['amount'] * -1) / $budget->getAmount() * 100,
+                    ];
+                } elseif (isset($transactionsSumByBudget[$budgetName]) && $transactionsSumByBudget[$budgetName]['amount'] > 0) {
+                    $transactionsSumByBudgetForMonths[$monthName][$budgetName] = [
+                        'amount' => $transactionsSumByBudget[$budgetName]['amount'],
+                        'ratio' => $transactionsSumByBudget[$budgetName]['amount'] / $budget->getAmount() * 100,
                     ];
                 } else {
                     $transactionsSumByBudgetForMonths[$monthName][$budgetName] = [
