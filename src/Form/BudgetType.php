@@ -4,6 +4,7 @@ namespace App\Form;
 
 use App\Entity\Budget;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -24,6 +25,13 @@ class BudgetType extends AbstractType
                 'label_attr'     => ['class' => 'budget-form-row__label'],
                 'attr'           => ['class' => 'budget-form-row__input'],
                 'row_attr'       => ['class' => 'budget-form-row'],
+            ])
+            ->add('isSalary', CheckboxType::class, [
+                'label'          => 'Is this a salary?',
+                'label_attr'     => ['class' => 'budget-form-row__label'],
+                'attr'           => ['class' => 'budget-form-row__input'],
+                'row_attr'       => ['class' => 'budget-form-row budget-form-row-is-salary'],
+                'required'       => false,
             ])
             ->add('save', SubmitType::class, [
                 'label'         => 'Save',

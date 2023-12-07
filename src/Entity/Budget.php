@@ -28,6 +28,9 @@ class Budget
     #[ORM\ManyToMany(targetEntity: Month::class, mappedBy: 'budgets')]
     private Collection $months;
 
+    #[ORM\Column(nullable: true)]
+    private ?bool $isSalary = null;
+
     public function __construct()
     {
         $this->months = new ArrayCollection();
@@ -97,6 +100,18 @@ class Budget
         if ($this->months->removeElement($month)) {
             $month->removeBudget($this);
         }
+
+        return $this;
+    }
+
+    public function isIsSalary(): ?bool
+    {
+        return $this->isSalary;
+    }
+
+    public function setIsSalary(?bool $isSalary): static
+    {
+        $this->isSalary = $isSalary;
 
         return $this;
     }
