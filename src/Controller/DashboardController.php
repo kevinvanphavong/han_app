@@ -77,7 +77,7 @@ class DashboardController extends AbstractController
         $budgetForm = $this->createForm(BudgetType::class);
         $budgetForm->handleRequest($request);
 
-        $months = $this->managerRegistry->getRepository(Month::class)->findBy(['user' => $this->getUser()]);
+        $months = $this->managerRegistry->getRepository(Month::class)->findMonthsSortedByUserAndCurrentDate($this->getUser());
         $transactionForm = $this->createForm(TransactionType::class, [], [
             'user' => $this->getUser(),
             'months' => $months,

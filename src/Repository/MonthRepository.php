@@ -21,6 +21,29 @@ class MonthRepository extends ServiceEntityRepository
         parent::__construct($registry, Month::class);
     }
 
+    public function findMonthsSortedByUserAndCurrentDate($user): array
+    {
+        $currentMonth = new \DateTime();
+        $months = $this->createQueryBuilder('m')
+            ->andWhere('m.user = :user')
+            ->setParameter('user', $user)
+            ->orderBy('m.date', 'DESC')
+            ->getQuery()
+            ->getResult();
+
+        // Si le 1er mois de la liste est plus grand que le mois actuel
+        // (ex: 2021-01 > 2020-12), alors on retourne la liste des mois avec le mois actuel en 1er choix
+        if ($months[0]->getDate()->format('Y-m') > $currentMonth->format('Y-m')) {
+            foreach($months as $key => $month) {
+                if ($month->getDate()->format('Y-m') === $currentMonth->format('Y-m')) {
+                    unset($months[$key]);
+                    array_unshift($months, $month);
+                }
+            }
+        }
+        return $months;
+    }
+
 //    /**
 //     * @return Month[] Returns an array of Month objects
 //     */
