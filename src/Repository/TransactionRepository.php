@@ -28,8 +28,8 @@ class TransactionRepository extends ServiceEntityRepository
         foreach($filters as $name => $value) {
             switch ($name) {
                 case 'name':
-                    $queryBuilder->andWhere("t.$name = %:$name%");
-                    $queryBuilder->setParameter($name, $value);
+                    $queryBuilder->andWhere("t.$name LIKE :$name");
+                    $queryBuilder->setParameter($name, '%'.$value.'%');
                     break;
                 case 'limit':
                     $queryBuilder->setMaxResults($value);
