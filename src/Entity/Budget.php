@@ -104,7 +104,7 @@ class Budget
         return $this;
     }
 
-    public function isIsSalary(): ?bool
+    public function isSalary(): ?bool
     {
         return $this->isSalary;
     }

@@ -26,8 +26,8 @@ class BudgetRepository extends ServiceEntityRepository
     {
         return $this->createQueryBuilder('budget')
             ->where('budget.user = :user')
-            ->andWhere('budget.isSalary != true')
             ->setParameter('user', $user)
+            ->andWhere('budget.isSalary != true')
             ->getQuery()
             ->getResult();
     }
