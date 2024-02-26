@@ -148,17 +148,16 @@ class TransactionDataHelper
         return $this->transactionRepository->findWithFilters($filtersFormData);
     }
 
-    public function getTotalsBudgetsAmountsByMonths($transactions, $months): array
+    public function getTotalsBudgetsAmountsByMonths($months): array
     {
         $totalsBudgetsAmountsByMonths = [];
         foreach ($months as $month) {
             $totalsBudgetsAmountsByMonths[$month->getDate()->format('F Y')] = [];
-            /** @var Transaction $transaction */
-            foreach ($transactions as $transaction) {
-                if ($transaction->getMonth() === $month) {
-                    $budgetName = $transaction->getBudgetCategory()->getName();
-                    $amount = $transaction->getBudgetCategory()->getAmount();
-                    $totalsBudgetsAmountsByMonths[$month->getDate()->format('F Y')][$budgetName] = $amount;
+            /** @var Budget $budget */
+            $totalsBudgetsAmountsByMonths[$month->getDate()->format('F Y')] = 0;
+            foreach ($month->getBudgets()->getValues() as $budget) {
+                if (!$budget->isSalary()) {;
+                    $totalsBudgetsAmountsByMonths[$month->getDate()->format('F Y')] += $budget->getAmount();
                 }
             }
         }

@@ -27,7 +27,7 @@
                     <td>{{ month.date|date('Y') }}</td>
                     <td>
                         <p class="sum-budget-amounts">
-                            {{ (sumBudgetsAmountsByMonths[month.date|date('F Y')] | sum) ~ '€' }}
+                            {{ sumBudgetsAmountsByMonths[month.date|date('F Y')] ~ '€' }}
                         </p>
                     </td>
                     <td>{{ (month.totalAmountEarned ?? 0) ~ '€' }}</td>

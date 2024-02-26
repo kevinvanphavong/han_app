@@ -3,7 +3,6 @@
 namespace App\Controller;
 
 use App\Entity\Month;
-use App\Entity\Transaction;
 use App\Form\BudgetType;
 use App\Form\MonthType;
 use App\Form\TransactionFilterType;
@@ -53,10 +52,9 @@ class DashboardController extends AbstractController
             $transactions = $this->transactionDataHelper->getTransactionsWithFilters($transactionFilterForm->getData(), $user);
             $this->addFlash('success', 'Filters applied successfully');
         }
-        $sumBudgetsAmountsByMonths = $this->transactionDataHelper->getTotalsBudgetsAmountsByMonths($transactions, $months);
 
         return $this->render('dashboard/index.html.twig', [
-            'sumBudgetsAmountsByMonths' => $sumBudgetsAmountsByMonths,
+            'sumBudgetsAmountsByMonths' => $this->transactionDataHelper->getTotalsBudgetsAmountsByMonths($months),
             'transactionsLimitResults' => self::TRANSACTIONS_TABLE_LIMIT_RESULTS,
             'transactions' => $transactions,
             'months' => $this->monthRepository->findBy(['user' => $user], ['date' => 'DESC']),
