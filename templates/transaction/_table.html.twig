@@ -1,5 +1,4 @@
-<div class="transaction-view">
-    <div class="transaction-view__header">
+<div class="transaction-view__header">
         {% if totalCountTransactions is defined %}
             <h2>{{ transactionTableTitle }} <span class="count-transactions">({{ totalCountTransactions }})</span></h2>
         {% else %}
@@ -13,6 +12,7 @@
             <a href="{{ path('creation_form_page') }}#transaction-form" class="button-action button-action-add">Add new transaction</a>
         </div>
     </div>
+<div class="transaction-view">
     <div class="filters-container {{ transactionFilterForm.vars.submitted ? 'filters-container--active' : 'filters-container--hidden' }}">
         <div class="filters">
             {% include('transaction/_filter-form.html.twig') with {'transactionFilterForm' : transactionFilterForm} %}

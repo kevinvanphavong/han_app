@@ -3,6 +3,13 @@
 .transaction-view__header {
     display: flex;
     justify-content: space-between;
+    margin-bottom: 1em;
+    flex-wrap: wrap;
+    row-gap: 0.5em;
+    /* Create a breakpoint for device above 1000px - Pour afficher tout les boutons sur une seconde ligne */
+    /* Dans ce breakpoint mettre : */
+    /* - le flex-wrap */
+    /* - le row-gap */
 }
 
 .button-action-container {
@@ -132,7 +139,6 @@
 .tables-view {
     display: flex;
     flex-direction: column;
-    grid-gap: 2em;
 }
 
 .transaction-view,
@@ -142,6 +148,7 @@
     flex-direction: column;
     grid-gap: 1em;
     width: 100%;
+    overflow-x: scroll;
 }
 
 table {
