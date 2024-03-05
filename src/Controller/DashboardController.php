@@ -22,7 +22,7 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 #[IsGranted('ROLE_USER')]
 class DashboardController extends AbstractController
 {
-    private const TRANSACTIONS_TABLE_LIMIT_RESULTS = 20;
+    private const TRANSACTIONS_TABLE_LIMIT_RESULTS = 10;
     private const TABLE_MAX_COLUMNS = 3;
 
     public function __construct(
