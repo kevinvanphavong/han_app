@@ -78,10 +78,10 @@
     color: #5b5b5b;
 }
 
-.budget-table-actions__link:last-child,
-.month-table-actions__link:last-child,
-.transaction-table-actions__link:last-child {
-    padding-left: 0.5em;
+.budget-table-actions__link,
+.month-table-actions__link,
+.transaction-table-actions__link {
+    padding: 0 0.5em;
 }
 
 .budget-table tr[data-is-salary="1"] {
