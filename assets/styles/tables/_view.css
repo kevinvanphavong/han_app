@@ -76,7 +76,7 @@
 .budget-table-actions,
 .month-table-actions,
 .transaction-table-actions {
-    width: 90px;
+    min-width: 100px;
 }
 
 .budget-table-actions__link,
@@ -88,7 +88,7 @@
 .budget-table-actions__link,
 .month-table-actions__link,
 .transaction-table-actions__link {
-    padding: 0 0.5em;
+    padding: 0 0.2em;
 }
 
 .budget-table tr[data-is-salary="1"] {
