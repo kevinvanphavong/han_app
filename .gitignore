@@ -12,6 +12,8 @@
 .idea*
 ###< symfony/framework-bundle ###
 
+han_app_db_dump_*.sql
+
 ###> phpunit/phpunit ###
 /phpunit.xml
 .phpunit.result.cache
