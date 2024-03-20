@@ -32,6 +32,7 @@ class TransactionDataHelper
         $transaction->setMonth($transactionFormData['month']);
         $transaction->setAmount($transactionFormData['amount']);
         $transaction->setType($transactionFormData['type']);
+        $transaction->setUser($user);
 
         if ($transactionFormData['budgetCategory'] === null
             && $transactionFormData['newBudgetName'] === null
@@ -42,8 +43,8 @@ class TransactionDataHelper
                 'errorMessage' => 'You have to add or create a budget for this transaction',
             ];
         } elseif (
-            $transactionFormData['newBudgetName'] === null && $transactionFormData['newBudgetAmount'] !== null
-            || $transactionFormData['newBudgetName'] !== null && $transactionFormData['newBudgetAmount'] === null
+            array_key_exists('newBudgetName', $transactionFormData) === false && array_key_exists('newBudgetAmount', $transactionFormData) !== false ||
+            array_key_exists('newBudgetName', $transactionFormData) !== false && array_key_exists('newBudgetAmount', $transactionFormData) === false
         ) {
             return [
                 'errorCode' => self::NEW_BUDGET_NOT_COMPLETED_CODE,

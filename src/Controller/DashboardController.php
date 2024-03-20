@@ -42,17 +42,31 @@ class DashboardController extends AbstractController
     ): Response {
         $user = $this->getUser();
         $months = $this->monthRepository->findBy(['user' => $user], ['date' => 'DESC']);
+
+        $transactionForm = $this->createForm(TransactionType::class, [], [
+            'user' => $this->getUser(),
+            'months' => $months,
+            'new_budget_is_enable' => false,
+        ]);
+
         $transactionFilterForm = $this->createForm(TransactionFilterType::class, [], [
             'user' => $user,
             'months' => $months,
             'url' => $this->generateUrl('dashboard_page'),
         ]);
         $transactionFilterForm->remove('limit');
+
         $transactionFilterForm->handleRequest($request);
+        $transactionForm->handleRequest($request);
+
         $transactions = $this->transactionRepository->findBy(['user' => $user], ['date' => 'DESC'], self::TRANSACTIONS_TABLE_LIMIT_RESULTS);
         if ($transactionFilterForm->isSubmitted() && $transactionFilterForm->isValid()) {
             $transactions = $this->transactionDataHelper->getTransactionsWithFilters($transactionFilterForm->getData(), $user);
             $this->addFlash('success', 'Filters applied successfully');
+        }
+
+        if ($transactionForm->isSubmitted() && $transactionForm->isValid()) {
+            $this->submitTransaction($transactionForm);
         }
 
         return $this->render('dashboard/index.html.twig', [
@@ -61,6 +75,7 @@ class DashboardController extends AbstractController
             'transactions' => $transactions,
             'months' => $this->monthRepository->findBy(['user' => $user], ['date' => 'DESC']),
             'budgets' => $this->budgetRepository->findBy(['user' => $user]),
+            'transactionForm' => $transactionForm,
             'transactionFilterForm' => $transactionFilterForm->createView(),
             'isLoginReferer' => str_contains($request->headers->get('referer'), 'login'),
             'emojis' => $this->userDataHelper->getUserEmojis(),
@@ -92,20 +107,7 @@ class DashboardController extends AbstractController
             || $monthForm->isSubmitted()
         ) {
             if ($transactionForm->isSubmitted() && $transactionForm->isValid()) {
-                $newTransaction = $this->transactionDataHelper->setNewDataTransaction($transactionForm, $this->getUser(), $entityManager);
-                if (is_array($newTransaction)) {
-                    $this->addFlash('error', $newTransaction['errorMessage']);
-                    return $this->redirectToRoute('creation_form_page');
-                }
-                $this->monthDataHelper->setTotalAmountSpentAndEarned(
-                    $newTransaction->getMonth(),
-                    $this->getUser(),
-                    MonthDataHelper::TRANSACTION_CREATE_ACTION,
-                    $newTransaction
-                );
-                $newTransaction->setUser($this->getUser());
-                $entityManager->persist($newTransaction);
-                $this->addFlash('success', 'Transaction created successfully');
+                $this->submitTransaction($transactionForm);
             } elseif ($monthForm->isSubmitted() && $monthForm->isValid()) {
                 $monthForm->getData()->setUser($this->getUser());
                 $entityManager->persist($monthForm->getData());
@@ -154,25 +156,66 @@ class DashboardController extends AbstractController
     }
 
     #[Route('/transactions', name: 'more_transactions_page')]
-    public function displayMoreTransactions(Request $request)
+    public function displayMoreTransactions(Request $request): Response
     {
         $user = $this->getUser();
+        $months = $this->monthRepository->findBy(['user' => $user], ['date' => 'DESC']);
+        $entityManager = $this->managerRegistry->getManager();
+
+        $transactionForm = $this->createForm(TransactionType::class, [], [
+            'user' => $this->getUser(),
+            'months' => $months,
+            'new_budget_is_enable' => false,
+        ]);
         $transactionFilterForm = $this->createForm(TransactionFilterType::class, [], [
             'user' => $user,
             'months' => $this->monthRepository->findBy(['user' => $user], ['date' => 'DESC']),
             'url' => $this->generateUrl('dashboard_page'),
         ]);
+
+        $transactionForm->handleRequest($request);
         $transactionFilterForm->handleRequest($request);
+
         $transactions = $this->transactionRepository->findBy(['user' => $this->getUser()], ['date' => 'DESC']);
         if ($transactionFilterForm->isSubmitted() && $transactionFilterForm->isValid()) {
             $transactions = $this->transactionDataHelper->getTransactionsWithFilters($transactionFilterForm->getData(), $user);
             $this->addFlash('success', 'Filters applied successfully');
         }
 
+
+        if ($transactionForm->isSubmitted() && $transactionForm->isValid()) {
+            $this->submitTransaction($transactionForm);
+        }
+
         return $this->render('dashboard/more-transactions.html.twig', [
             'transactions' => $transactions,
             'totalCountTransactions' => count($transactions),
             'transactionFilterForm' => $transactionFilterForm->createView(),
+            'transactionForm' => $transactionForm->createView(),
         ]);
+    }
+
+    protected function submitTransaction($transactionForm)
+    {
+        $entityManager = $this->managerRegistry->getManager();
+        $newTransaction = $this->transactionDataHelper->setNewDataTransaction(
+            $transactionForm,
+            $this->getUser(),
+            $entityManager
+        );
+        if (is_array($newTransaction)) {
+            $this->addFlash('error', $newTransaction['errorMessage']);
+            return $this->redirectToRoute('creation_form_page');
+        }
+        $this->monthDataHelper->setTotalAmountSpentAndEarned(
+            $newTransaction->getMonth(),
+            $this->getUser(),
+            MonthDataHelper::TRANSACTION_CREATE_ACTION,
+            $newTransaction
+        );
+
+        $entityManager->persist($newTransaction);
+        $entityManager->flush();
+        $this->addFlash('success', 'Transaction created successfully');
     }
 }
