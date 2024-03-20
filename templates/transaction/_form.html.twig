@@ -5,6 +5,19 @@
             padding: 2em;
             border: 1px solid grey;
             border-radius: 10px;
+            .transaction-form-row__label,
+            .transaction-form-row__label + * {
+                color: whitesmoke;
+            }
+            .transaction-form-row #transaction_save {
+                background-color: #167b16;
+                box-shadow: unset;
+                border: 1px solid #538a57;
+            }
+
+            .transaction-form-row #transaction_save:hover {
+                background-color: #1b7f1b;
+            }
         }
 
         .transaction-form-label__new-budget {
@@ -98,6 +111,7 @@
     {{ form_end(transactionForm) }}
 
     <script>
+      function toggleNewBudgetInTransactionForm() {
         let newBudgetButton = document.querySelector('.js-transaction-form-label__new-budget');
         let newBudgetIcon = document.querySelector('.js-transaction-form-label__new_budget-icon');
         let newBudgetRow = document.querySelector('.js-transaction-form-row__new-budget');
@@ -108,5 +122,8 @@
           newBudgetIcon.classList.toggle('transaction-form-label__new_budget-icon--unactive')
           newBudgetIcon.classList.toggle('transaction-form-label__new_budget-icon--active')
         })
+      }
+
+      toggleNewBudgetInTransactionForm();
     </script>
 {% endblock transactionForm %}
