@@ -1,5 +1,12 @@
 {% block transactionForm %}
     <style>
+        .transaction-form-container {
+            background-color: #0e620e;
+            padding: 2em;
+            border: 1px solid grey;
+            border-radius: 10px;
+        }
+
         .transaction-form-label__new-budget {
             display: flex;
             align-items: center;
@@ -59,8 +66,10 @@
     </style>
 
 
-    <h2>{{ titleForm }}</h2>
-    {{ form_start(transactionForm) }}
+    {%  if titleForm %}
+        <h2>{{ titleForm }}</h2>
+    {%  endif %}
+        {{ form_start(transactionForm) }}
         {{ form_row(transactionForm.date) }}
         {{ form_row(transactionForm.month) }}
         {{ form_row(transactionForm.name) }}

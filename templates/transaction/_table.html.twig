@@ -9,10 +9,17 @@
             {% if seeMoreButtonActive is same as true %}
                 <a href="{{ path('more_transactions_page') }}" class="button-action button-action-see-more">See more</a>
             {% endif %}
-            <a href="{{ path('creation_form_page') }}#transaction-form" class="button-action button-action-add">Add new transaction</a>
+{#            <a href="{{ path('creation_form_page') }}#transaction-form" class="button-action button-action-add">Add new transaction</a>#}
+            <a href="#" class="button-action button-action-add">Add new transaction</a>
         </div>
     </div>
 <div class="transaction-view">
+    <div class="transaction-form-container">
+        <div class="transaction-form">
+            {% include('transaction/_form.html.twig') with {'transactionForm' : transactionForm, 'titleForm' : false} %}
+        </div>
+    </div>
+
     <div class="filters-container {{ transactionFilterForm.vars.submitted ? 'filters-container--active' : 'filters-container--hidden' }}">
         <div class="filters">
             {% include('transaction/_filter-form.html.twig') with {'transactionFilterForm' : transactionFilterForm} %}
