@@ -97,12 +97,15 @@
 }
 
 .button-action {
+    background: none;
     padding: 0.5em 1em;
     width: fit-content;
+    border: none;
     border-radius: 5px;
     color: var(--white-color);
     text-decoration: none;
     box-shadow: 2px 2px 10px var(--shadow-color);
+    cursor: pointer;
 }
 
 .button-action-refresh,
