@@ -9,6 +9,7 @@ use App\Form\TransactionFilterType;
 use App\Form\TransactionType;
 use App\Helper\MonthDataHelper;
 use App\Helper\TransactionDataHelper;
+use App\Helper\UserDataHelper;
 use App\Repository\BudgetRepository;
 use App\Repository\MonthRepository;
 use App\Repository\TransactionRepository;
@@ -29,9 +30,10 @@ class DashboardController extends AbstractController
         private ManagerRegistry $managerRegistry,
         private TransactionDataHelper $transactionDataHelper,
         private MonthDataHelper $monthDataHelper,
+        private UserDataHelper $userDataHelper,
         private TransactionRepository $transactionRepository,
         private MonthRepository $monthRepository,
-        private BudgetRepository $budgetRepository
+        private BudgetRepository $budgetRepository,
     ) {}
 
     #[Route('/', name: 'dashboard_page')]
@@ -61,26 +63,27 @@ class DashboardController extends AbstractController
             'budgets' => $this->budgetRepository->findBy(['user' => $user]),
             'transactionFilterForm' => $transactionFilterForm->createView(),
             'isLoginReferer' => str_contains($request->headers->get('referer'), 'login'),
-            'emojis' => ['🤍','🖤','💜','❤️‍🩹','💙','💚','❤️‍🔥','🫀','💘', '️❤️']
+            'emojis' => $this->userDataHelper->getUserEmojis(),
         ]);
     }
 
     #[Route('/form/creation', name: 'creation_form_page')]
-    public function creation(Request $request): Response{
+    public function creation(Request $request, MonthRepository $monthRepository): Response{
         $entityManager = $this->managerRegistry->getManager();
+        $months = $monthRepository->findMonthsSortedByUserAndCurrentDate($this->getUser());
+
+        $budgetForm = $this->createForm(BudgetType::class);
         $monthForm = $this->createForm(MonthType::class, new Month(), [
             'budgets' => $this->budgetRepository->findBy(['user' => $this->getUser()])
         ]);
-        $monthForm->handleRequest($request);
-        $budgetForm = $this->createForm(BudgetType::class);
-        $budgetForm->handleRequest($request);
-
-        $months = $this->managerRegistry->getRepository(Month::class)->findMonthsSortedByUserAndCurrentDate($this->getUser());
         $transactionForm = $this->createForm(TransactionType::class, [], [
             'user' => $this->getUser(),
             'months' => $months,
             'new_budget_is_enable' => true,
         ]);
+
+        $monthForm->handleRequest($request);
+        $budgetForm->handleRequest($request);
         $transactionForm->handleRequest($request);
 
         if (
