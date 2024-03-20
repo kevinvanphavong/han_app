@@ -121,6 +121,9 @@
         let newBudgetButton = document.querySelector('.js-transaction-form-label__new-budget');
         let newBudgetIcon = document.querySelector('.js-transaction-form-label__new_budget-icon');
         let newBudgetRow = document.querySelector('.js-transaction-form-row__new-budget');
+        if (!newBudgetButton) {
+          return;
+        }
         newBudgetButton.addEventListener('click', function() {
           newBudgetRow.classList.toggle('transaction-form-row__new-budget--hidden')
           newBudgetRow.classList.toggle('transaction-form-row__new-budget--active')

@@ -17,16 +17,31 @@
 
     <script>
       document.addEventListener('DOMContentLoaded', function() {
-      let btnShowFilter = document.querySelector('.button-action-filter');
-      let filtersContainer = document.querySelector('.filters-container');
-        displayFilters(btnShowFilter, filtersContainer);
-      })
+        toggleFilterForm();
+        toggleTransactionForm();
+      });
 
-        function displayFilters(btnShowFilter, filtersContainer) {
-          btnShowFilter.addEventListener('click', function() {
-            filtersContainer.classList.toggle('filters-container--hidden');
-            filtersContainer.classList.toggle('filters-container--active');
-          });
+      function toggleTransactionForm()
+      {
+        let btnShowForm = document.querySelector('.button-action-add-transaction');
+        let transactionFormContainer = document.querySelector('.transaction-form-container');
+        toggleContainerFromButtonAction(btnShowForm, transactionFormContainer, 'transaction-form');
+      }
+
+      function toggleFilterForm() {
+          let btnShowFilter = document.querySelector('.button-action-filter');
+          let filtersContainer = document.querySelector('.filters-container');
+          toggleContainerFromButtonAction(btnShowFilter, filtersContainer, 'filters');
+      }
+
+      function toggleContainerFromButtonAction(btnShowFilter, filtersContainer, classname) {
+        if (!btnShowFilter) {
+            return;
         }
+        btnShowFilter.addEventListener('click', function() {
+            filtersContainer.classList.toggle(classname + '-container--hidden');
+            filtersContainer.classList.toggle(classname + '-container--active');
+        });
+      }
     </script>
 {% endblock transactionFilterForm %}

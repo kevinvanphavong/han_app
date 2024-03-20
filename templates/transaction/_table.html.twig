@@ -5,16 +5,16 @@
             <h2>{{ transactionTableTitle }}</h2>
         {% endif %}
         <div class="button-action-container">
-            <a href="#" class="button-action button-action-filter">Filter</a>
+            <button class="button-action button-action-filter">Filter</button>
             {% if seeMoreButtonActive is same as true %}
                 <a href="{{ path('more_transactions_page') }}" class="button-action button-action-see-more">See more</a>
             {% endif %}
 {#            <a href="{{ path('creation_form_page') }}#transaction-form" class="button-action button-action-add">Add new transaction</a>#}
-            <a href="#" class="button-action button-action-add">Add new transaction</a>
+            <button class="button-action button-action-add button-action-add-transaction">Add new transaction</button>
         </div>
     </div>
 <div class="transaction-view">
-    <div class="transaction-form-container">
+    <div class="transaction-form-container {{ transactionForm.vars.submitted ? 'transaction-form-container--active' : 'transaction-form-container--hidden' }}">
         <div class="transaction-form">
             {% include('transaction/_form.html.twig') with {'transactionForm' : transactionForm, 'titleForm' : false} %}
         </div>
