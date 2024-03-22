@@ -17,30 +17,38 @@
 
     <script>
       document.addEventListener('DOMContentLoaded', function() {
-        toggleFilterForm();
-        toggleTransactionForm();
+        prepareToggleForm();
       });
 
-      function toggleTransactionForm()
-      {
-        let btnShowForm = document.querySelector('.button-action-add-transaction');
-        let transactionFormContainer = document.querySelector('.transaction-form-container');
-        toggleContainerFromButtonAction(btnShowForm, transactionFormContainer, 'transaction-form');
+      function prepareToggleForm() {
+        const formsData = [
+          ['button-action-add-transaction', 'transaction-form-container', 'transaction-form'],
+          ['button-action-filter', 'filters-container', 'filters']
+        ];
+        formsData.forEach(form => {
+          toggleContainerFromButtonAction(
+            document.querySelector('.' + form[0]),
+            document.querySelector('.' + form[1]),
+            form[2],
+            formsData
+          );
+        });
       }
 
-      function toggleFilterForm() {
-          let btnShowFilter = document.querySelector('.button-action-filter');
-          let filtersContainer = document.querySelector('.filters-container');
-          toggleContainerFromButtonAction(btnShowFilter, filtersContainer, 'filters');
-      }
-
-      function toggleContainerFromButtonAction(btnShowFilter, filtersContainer, classname) {
-        if (!btnShowFilter) {
+      function toggleContainerFromButtonAction(btnShowForm, formContainer, classname, formsData) {
+        if (!btnShowForm) {
             return;
         }
-        btnShowFilter.addEventListener('click', function() {
-            filtersContainer.classList.toggle(classname + '-container--hidden');
-            filtersContainer.classList.toggle(classname + '-container--active');
+        btnShowForm.addEventListener('click', function() {
+            formsData.forEach(form => {
+                if (!btnShowForm.classList.contains(form[0])) {
+                const otherFormContainer = document.querySelector('.' + form[1]);
+                otherFormContainer.classList.add(form[2] + '-container--hidden');
+                otherFormContainer.classList.remove(form[2] + '-container--active');
+                }
+            });
+          formContainer.classList.toggle(classname + '-container--hidden');
+          formContainer.classList.toggle(classname + '-container--active');
         });
       }
     </script>
