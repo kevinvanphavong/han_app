@@ -241,3 +241,29 @@ table {
     text-align: center;
     border-radius: 10px;
 }
+
+.month-table-locked-column__checkbox-wrapper {
+    width: 44px;
+    height: 24px;
+    border-radius: 30px;
+    padding: 3px;
+    background-color: #fff;
+    margin: 0 auto;
+    display: flex;
+}
+.month-table-locked-column__checkbox-wrapper--locked {
+    justify-content: flex-start;
+    background-color: var(--red-color);
+}
+.month-table-locked-column__checkbox-wrapper--unlocked {
+    justify-content: flex-end;
+    background-color: var(--green-color);
+}
+.month-table-locked-column__checkbox {
+    width: 50%;
+    height: 100%;
+    border-radius: 30px;
+    border: unset;
+    background-color: var(--white-color);
+    cursor: pointer;
+}
