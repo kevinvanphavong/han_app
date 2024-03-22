@@ -35,6 +35,9 @@ class Month
     #[ORM\ManyToMany(targetEntity: Budget::class, inversedBy: 'months')]
     private Collection $budgets;
 
+    #[ORM\Column(nullable: true)]
+    private ?bool $isLocked = null;
+
     public function __construct()
     {
         $this->budgets = new ArrayCollection();
@@ -125,6 +128,18 @@ class Month
     public function removeBudget(Budget $budget): static
     {
         $this->budgets->removeElement($budget);
+
+        return $this;
+    }
+
+    public function isLocked(): ?bool
+    {
+        return $this->isLocked;
+    }
+
+    public function setIsLocked(?bool $isLocked): static
+    {
+        $this->isLocked = $isLocked;
 
         return $this;
     }
