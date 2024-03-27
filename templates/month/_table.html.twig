@@ -14,8 +14,8 @@
                 <th>Total amount earned</th>
                 <th>Total amount spent</th>
                 <th>Balance</th>
-                <th>Locked</th>
                 <th class="month-table-actions">Actions</th>
+                <th><i class="fa-solid fa-lock"></i></th>
             </tr>
         </thead>
         <tbody>
@@ -37,14 +37,14 @@
                             {{ (month.balance ?? 0) ~ '€' }}
                         </p>
                     </td>
+                    <td class="month-table-actions">
+                        <a class="month-table-actions__link month-table-actions__link-edit" href="{{ path('month_edit_action', {'id': month.id}) }}"><i class="fa-solid fa-pen-to-square"></i></a>
+                        <a class="month-table-actions__link month-table-actions__link-delete" href="{{ path('month_delete_action', {'id': month.id}) }}"><i class="fa-solid fa-trash"></i></a>
+                    </td>
                     <td class="month-table-locked-column">
                         <div class="month-table-locked-column__checkbox-wrapper month-table-locked-column__checkbox-wrapper{{ isLocked }}">
                             <button class="month-table-locked-column__checkbox" data-month-id="{{ month.id }}"></button>
                         </div>
-                    </td>
-                    <td class="month-table-actions">
-                        <a class="month-table-actions__link month-table-actions__link-edit" href="{{ path('month_edit_action', {'id': month.id}) }}"><i class="fa-solid fa-pen-to-square"></i></a>
-                        <a class="month-table-actions__link month-table-actions__link-delete" href="{{ path('month_delete_action', {'id': month.id}) }}"><i class="fa-solid fa-trash"></i></a>
                     </td>
                 </tr>
             {% endfor %}
@@ -60,9 +60,15 @@
                 const parent = checkbox.parentElement;
                 checkbox.addEventListener('click', function () {
                   const monthId = this.getAttribute('data-month-id');
-                  console.log(parent)
-                    parent.classList.toggle('month-table-locked-column__checkbox-wrapper--locked');
-                    parent.classList.toggle('month-table-locked-column__checkbox-wrapper--unlocked');
+
+                  fetch('/month/edit/lock', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json',},
+                    body: JSON.stringify({ monthId: monthId })
+                  })
+
+                  parent.classList.toggle('month-table-locked-column__checkbox-wrapper--locked');
+                  parent.classList.toggle('month-table-locked-column__checkbox-wrapper--unlocked');
                 });
               });
         </script>
