@@ -160,7 +160,6 @@ class DashboardController extends AbstractController
     {
         $user = $this->getUser();
         $months = $this->monthRepository->findBy(['user' => $user], ['date' => 'DESC']);
-        $entityManager = $this->managerRegistry->getManager();
 
         $transactionForm = $this->createForm(TransactionType::class, [], [
             'user' => $this->getUser(),
