@@ -9,6 +9,7 @@ use App\Repository\MonthRepository;
 use App\Repository\TransactionRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -79,5 +80,23 @@ class MonthController extends AbstractController
             $this->addFlash('error', 'Something went wrong while refreshing months amounts');
         }
         return $this->redirectToRoute('dashboard_page');
+    }
+
+    #[Route('/month/edit/lock', name: 'month_edit_action_lock')]
+    public function changeMonthLockStatus(Request $request): JsonResponse
+    {
+        $data = json_decode($request->getContent(), true);
+
+        if (!isset($data['monthId'])) {
+            $this->addFlash('error', 'Month status update failed');
+            return new JsonResponse(['error' => 'Month ID not provided'], 400);
+        }
+        $month = $this->monthRepository->find($data['monthId']);
+        $month->setIsLocked(!$month->isLocked());
+        $entityManager = $this->managerRegistry->getManager();
+        $entityManager->persist($month);
+        $entityManager->flush();
+        $this->addFlash('success', 'Month lock status changed successfully');
+        return new JsonResponse(['success' => 'Month has been changed'], 200);
     }
 }
