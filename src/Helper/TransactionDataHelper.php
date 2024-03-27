@@ -84,9 +84,7 @@ class TransactionDataHelper
                 }
             }
         }
-        $this->calculateRatioFromSumTransactionWithBudget($transactionsSumByBudgetForMonths, $budgets);
-
-        return $transactionsSumByBudgetForMonths;
+        return $this->calculateRatioFromSumTransactionWithBudget($transactionsSumByBudgetForMonths, $budgets);
     }
 
     private function getAmountTransactionByType($transaction): float
@@ -97,7 +95,7 @@ class TransactionDataHelper
         return $transaction->getAmount();
     }
 
-    private function calculateRatioFromSumTransactionWithBudget(&$transactionsSumByBudgetForMonths, $budgets): array
+    private function calculateRatioFromSumTransactionWithBudget($transactionsSumByBudgetForMonths, $budgets): array
     {
         foreach ($transactionsSumByBudgetForMonths as $monthName => $transactionsSumByBudget) {
             foreach($budgets as $budget) {
