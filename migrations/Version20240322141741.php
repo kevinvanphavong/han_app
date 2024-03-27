@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20231224164015 extends AbstractMigration
+final class Version20240322141741 extends AbstractMigration
 {
     public function getDescription(): string
     {
@@ -21,7 +21,7 @@ final class Version20231224164015 extends AbstractMigration
     {
         // this up() migration is auto-generated, please modify it to your needs
         $this->addSql('CREATE TABLE budget (id INT AUTO_INCREMENT NOT NULL, user_id INT NOT NULL, name VARCHAR(255) NOT NULL, amount DOUBLE PRECISION NOT NULL, is_salary TINYINT(1) DEFAULT NULL, INDEX IDX_73F2F77BA76ED395 (user_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
-        $this->addSql('CREATE TABLE month (id INT AUTO_INCREMENT NOT NULL, user_id INT NOT NULL, balance DOUBLE PRECISION DEFAULT NULL, total_amount_spent DOUBLE PRECISION DEFAULT NULL, total_amount_earned DOUBLE PRECISION DEFAULT NULL, date DATE NOT NULL, INDEX IDX_8EB61006A76ED395 (user_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
+        $this->addSql('CREATE TABLE month (id INT AUTO_INCREMENT NOT NULL, user_id INT NOT NULL, balance DOUBLE PRECISION DEFAULT NULL, total_amount_spent DOUBLE PRECISION DEFAULT NULL, total_amount_earned DOUBLE PRECISION DEFAULT NULL, date DATE NOT NULL, is_locked TINYINT(1) DEFAULT NULL, INDEX IDX_8EB61006A76ED395 (user_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE month_budget (month_id INT NOT NULL, budget_id INT NOT NULL, INDEX IDX_78C61BE5A0CBDE4 (month_id), INDEX IDX_78C61BE536ABA6B8 (budget_id), PRIMARY KEY(month_id, budget_id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE transaction (id INT AUTO_INCREMENT NOT NULL, type_id INT DEFAULT NULL, budget_category_id INT DEFAULT NULL, month_id INT DEFAULT NULL, user_id INT NOT NULL, date DATETIME NOT NULL, name VARCHAR(255) NOT NULL, amount DOUBLE PRECISION NOT NULL, INDEX IDX_723705D1C54C8C93 (type_id), INDEX IDX_723705D1644CDBBD (budget_category_id), INDEX IDX_723705D1A0CBDE4 (month_id), INDEX IDX_723705D1A76ED395 (user_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE transaction_type (id INT AUTO_INCREMENT NOT NULL, name VARCHAR(255) NOT NULL, associated_number SMALLINT NOT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
