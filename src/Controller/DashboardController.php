@@ -42,6 +42,7 @@ class DashboardController extends AbstractController
     ): Response {
         $user = $this->getUser();
         $months = $this->monthRepository->findBy(['user' => $user], ['date' => 'DESC']);
+        $transactions = $this->transactionRepository->findByUserSortedByDateAndIdDesc($user, self::TRANSACTIONS_TABLE_LIMIT_RESULTS);
 
         $transactionForm = $this->createForm(TransactionType::class, [], [
             'user' => $this->getUser(),
@@ -59,7 +60,6 @@ class DashboardController extends AbstractController
         $transactionFilterForm->handleRequest($request);
         $transactionForm->handleRequest($request);
 
-        $transactions = $this->transactionRepository->findBy(['user' => $user], ['date' => 'DESC'], self::TRANSACTIONS_TABLE_LIMIT_RESULTS);
         if ($transactionFilterForm->isSubmitted() && $transactionFilterForm->isValid()) {
             $transactions = $this->transactionDataHelper->getTransactionsWithFilters($transactionFilterForm->getData(), $user);
             $this->addFlash('success', 'Filters applied successfully');
@@ -67,6 +67,7 @@ class DashboardController extends AbstractController
 
         if ($transactionForm->isSubmitted() && $transactionForm->isValid()) {
             $this->submitTransaction($transactionForm);
+            return $this->redirectToRoute('dashboard_page');
         }
 
         return $this->render('dashboard/index.html.twig', [
@@ -108,6 +109,7 @@ class DashboardController extends AbstractController
         ) {
             if ($transactionForm->isSubmitted() && $transactionForm->isValid()) {
                 $this->submitTransaction($transactionForm);
+                return $this->redirectToRoute('creation_form_page');
             } elseif ($monthForm->isSubmitted() && $monthForm->isValid()) {
                 $monthForm->getData()->setUser($this->getUser());
                 $entityManager->persist($monthForm->getData());
@@ -184,6 +186,7 @@ class DashboardController extends AbstractController
 
         if ($transactionForm->isSubmitted() && $transactionForm->isValid()) {
             $this->submitTransaction($transactionForm);
+            return $this->redirectToRoute('more_transactions_page');
         }
 
         return $this->render('dashboard/more-transactions.html.twig', [
@@ -194,7 +197,7 @@ class DashboardController extends AbstractController
         ]);
     }
 
-    protected function submitTransaction($transactionForm)
+    protected function submitTransaction($transactionForm): void
     {
         $entityManager = $this->managerRegistry->getManager();
         $newTransaction = $this->transactionDataHelper->setNewDataTransaction(
@@ -204,7 +207,7 @@ class DashboardController extends AbstractController
         );
         if (is_array($newTransaction)) {
             $this->addFlash('error', $newTransaction['errorMessage']);
-            return $this->redirectToRoute('creation_form_page');
+            return;
         }
         $this->monthDataHelper->setTotalAmountSpentAndEarned(
             $newTransaction->getMonth(),

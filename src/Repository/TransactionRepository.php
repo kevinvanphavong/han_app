@@ -40,9 +40,23 @@ class TransactionRepository extends ServiceEntityRepository
                     break;
             }
         }
-        $queryBuilder->addOrderBy('t.date', 'DESC');
+        $queryBuilder->orderBy('t.date', 'DESC');
+        $queryBuilder->addOrderBy('t.id', 'DESC');
 
         return $queryBuilder->getQuery()->getResult();
+    }
+
+    public function findByUserSortedByDateAndIdDesc($user, $limit = null)
+    {
+        return $this->createQueryBuilder('t')
+            ->where('t.user = :user')
+            ->setParameter('user', $user)
+            ->orderBy('t.date', 'DESC')
+            ->addOrderBy('t.id', 'DESC')
+            ->setMaxResults($limit)
+            ->getQuery()
+            ->getResult()
+        ;
     }
 
 //    /**
