@@ -81,14 +81,20 @@
 
 .budget-table-actions__link,
 .month-table-actions__link,
-.transaction-table-actions__link {
+.transaction-table-actions__icon {
     color: #5b5b5b;
 }
 
 .budget-table-actions__link,
 .month-table-actions__link,
-.transaction-table-actions__link {
+.transaction-table-actions__icon {
     padding: 0 0.2em;
+}
+
+
+.transaction-table-actions--locked .transaction-table-actions__icon {
+    opacity: 0.2;
+    cursor: not-allowed;
 }
 
 .budget-table tr[data-is-salary="1"] {
