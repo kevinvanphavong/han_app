@@ -6,8 +6,10 @@ use App\Entity\Transaction;
 use App\Form\BudgetType;
 use App\Form\TransactionType;
 use App\Helper\MonthDataHelper;
+use App\Helper\TransactionDataHelper;
 use App\Repository\MonthRepository;
 use App\Repository\TransactionRepository;
+use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -18,16 +20,12 @@ use Symfony\Component\Validator\Constraints\Date;
 class TransactionController extends AbstractController
 {
     public function __construct(
-        TransactionRepository $transactionRepository,
-        ManagerRegistry $managerRegistry,
-        MonthRepository $monthRepository,
-        MonthDataHelper $monthDataHelper
-    ){
-        $this->transactionRepository = $transactionRepository;
-        $this->managerRegistry = $managerRegistry;
-        $this->monthRepository = $monthRepository;
-        $this->monthDataHelper = $monthDataHelper;
-    }
+        public TransactionRepository $transactionRepository,
+        public ManagerRegistry $managerRegistry,
+        public MonthRepository $monthRepository,
+        public MonthDataHelper $monthDataHelper,
+        public TransactionDataHelper $transactionDataHelper,
+    ) {}
 
     #[Route('/transaction/{id}/delete', name: 'transaction_delete_action')]
     public function deleteTransaction($id): Response
@@ -46,6 +44,9 @@ class TransactionController extends AbstractController
         return $this->redirectToRoute('dashboard_page');
     }
 
+    /**
+     * @throws Exception
+     */
     #[Route('/transaction/{id}/edit', name: 'transaction_edit_action')]
     public function editTransaction(Request $request, $id): Response
     {
