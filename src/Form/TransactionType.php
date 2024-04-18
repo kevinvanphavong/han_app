@@ -34,7 +34,7 @@ class TransactionType extends AbstractType
                 'class' => Month::class,
                 'choices' => $months,
                 'choice_label' => function ($month) use ($user) {
-                    if ($month->getUser() === $user) {
+                    if ($month->getUser() === $user && $month->isLocked() !== true) {
                         return $month->getDate()->format('F Y');
                     }
                 },
