@@ -18,6 +18,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 #[IsGranted('ROLE_USER')]
@@ -42,11 +43,13 @@ class DashboardController extends AbstractController
     ): Response {
         $user = $this->getUser();
         $months = $this->monthRepository->findBy(['user' => $user], ['date' => 'DESC']);
+        $lastTransaction = $this->transactionRepository->findOneBy(['user' => $user], ['date' => 'DESC']);
         $transactions = $this->transactionRepository->findByUserSortedByDateAndIdDesc($user, self::TRANSACTIONS_TABLE_LIMIT_RESULTS);
 
         $transactionForm = $this->createForm(TransactionType::class, [], [
             'user' => $this->getUser(),
             'months' => $months,
+            'last_transaction' => $lastTransaction ?? null,
             'new_budget_is_enable' => false,
         ]);
 

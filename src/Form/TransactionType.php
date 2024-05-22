@@ -21,6 +21,7 @@ class TransactionType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $user = $options['user'];
+        $lastTransaction = $options['last_transaction'];
         $months = $options['months'];
         $newBudgetIsEnable = $options['new_budget_is_enable'];
 
@@ -29,14 +30,18 @@ class TransactionType extends AbstractType
                 'label_attr'     => ['class' => 'transaction-form-row__label'],
                 'attr'           => ['class' => 'transaction-form-row__input'],
                 'row_attr'       => ['class' => 'transaction-form-row'],
+                'data'           => $lastTransaction ? $lastTransaction->getDate() : new \DateTime('now'),
             ])
             ->add('month', EntityType::class, [
-                'class' => Month::class,
-                'choices' => $months,
-                'choice_label' => function ($month) use ($user) {
-                    if ($month->getUser() === $user && $month->isLocked() !== true) {
-                        return $month->getDate()->format('F Y');
+                'class'          => Month::class,
+                'choices'        => $months,
+                'choice_label'   => function ($month) use ($user) {
+                    $data = null;
+                    if ($month->isLocked() !== true) {
+                        dump('toto');
+                        $data = $month->getDate()->format('F Y');
                     }
+                    return $data;
                 },
                 'label_attr'     => ['class' => 'transaction-form-row__label'],
                 'attr'           => ['class' => 'transaction-form-row__input'],
@@ -104,6 +109,7 @@ class TransactionType extends AbstractType
             'data_class' => null,
             'user' => null,
             'months' => null,
+            'last_transaction' => null,
             'new_budget_is_enable' => null,
             'attr' => ['class' => 'transaction-form', 'id' => 'transaction-form']
         ]);
