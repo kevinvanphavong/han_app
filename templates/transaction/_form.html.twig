@@ -62,14 +62,15 @@
             }
         }
 
-        .transaction-form-row__new-budget--hidden {
-            display: none;
-        }
-        .transaction-form-row__new-budget--active {
+        .transaction-form-row__new-budget {
             display: flex;
             flex-direction: column;
             grid-gap: 1em;
             padding: 0 2em;
+            height: 100%;
+        }
+        .transaction-form-row__new-budget--hidden {
+            display: none;
         }
 
         .transaction-form-label__budget {
@@ -109,7 +110,7 @@
                 </span>
                 <span>Create a <bold>new budget</bold></span>
             </div>
-            <div class="transaction-form-row__new-budget--hidden js-transaction-form-row__new-budget">
+            <div class="transaction-form-row__new-budget transaction-form-row__new-budget--hidden js-transaction-form-row__new-budget">
                 {{ form_row(transactionForm.newBudgetName) }}
                 {{ form_row(transactionForm.newBudgetAmount) }}
             </div>
@@ -126,7 +127,6 @@
         }
         newBudgetButton.addEventListener('click', function() {
           newBudgetRow.classList.toggle('transaction-form-row__new-budget--hidden')
-          newBudgetRow.classList.toggle('transaction-form-row__new-budget--active')
 
           newBudgetIcon.classList.toggle('transaction-form-label__new_budget-icon--unactive')
           newBudgetIcon.classList.toggle('transaction-form-label__new_budget-icon--active')
