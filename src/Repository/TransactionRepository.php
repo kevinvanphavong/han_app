@@ -51,9 +51,11 @@ class TransactionRepository extends ServiceEntityRepository
         return $this->createQueryBuilder('t')
             ->where('t.user = :user')
             ->setParameter('user', $user)
+            ->andWhere('t.from_upload = :from_upload')
+            ->setParameter('from_upload', false)
             ->orderBy('t.date', 'DESC')
             ->addOrderBy('t.id', 'DESC')
-            ->setMaxResults($limit)
+            ->setMaxResults(10)
             ->getQuery()
             ->getResult()
         ;
