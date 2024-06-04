@@ -9,6 +9,7 @@ use App\Entity\TransactionType as TransactionTypeEntity;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ButtonType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -20,17 +21,19 @@ class TransactionType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
+        $date = $options['date'] ?: null;
         $user = $options['user'];
         $lastTransaction = $options['last_transaction'];
         $months = $options['months'];
         $newBudgetIsEnable = $options['new_budget_is_enable'];
+        $deleteButton = $options['delete_button'];
 
         $builder
             ->add('date', DateType::class, [
                 'label_attr'     => ['class' => 'transaction-form-row__label'],
                 'attr'           => ['class' => 'transaction-form-row__input'],
                 'row_attr'       => ['class' => 'transaction-form-row'],
-                'data'           => $lastTransaction ? $lastTransaction->getDate() : new \DateTime('now'),
+                'data'           => $lastTransaction ? $lastTransaction->getDate() : $date,
             ])
             ->add('month', EntityType::class, [
                 'class'          => Month::class,
@@ -38,11 +41,11 @@ class TransactionType extends AbstractType
                 'choice_label'   => function ($month) use ($user) {
                     $data = null;
                     if ($month->isLocked() !== true) {
-                        dump('toto');
                         $data = $month->getDate()->format('F Y');
                     }
                     return $data;
                 },
+                'data' => null,
                 'label_attr'     => ['class' => 'transaction-form-row__label'],
                 'attr'           => ['class' => 'transaction-form-row__input'],
                 'row_attr'       => ['class' => 'transaction-form-row'],
@@ -95,6 +98,14 @@ class TransactionType extends AbstractType
                     'required'       => false
                 ]);
             }
+            if ($deleteButton) {
+                $builder
+                    ->add('delete', ButtonType::class, [
+                        'label'         => 'Delete',
+                        'attr'           => ['class' => 'transaction-form-row__input'],
+                        'row_attr'       => ['class' => 'transaction-form-row'],
+                    ]);
+            }
             $builder->add('save', SubmitType::class, [
                 'label'         => 'Save',
                 'attr'           => ['class' => 'transaction-form-row__input'],
@@ -109,8 +120,10 @@ class TransactionType extends AbstractType
             'data_class' => null,
             'user' => null,
             'months' => null,
+            'date' => null,
             'last_transaction' => null,
             'new_budget_is_enable' => null,
+            'delete_button' => null,
             'attr' => ['class' => 'transaction-form', 'id' => 'transaction-form']
         ]);
     }
