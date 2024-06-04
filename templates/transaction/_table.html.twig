@@ -50,7 +50,7 @@
                     <td>{{ transaction.name }}</td>
                     <td><p class="transaction-type transaction-type--{{ transaction.type.name|lower }}">{{ transaction.type.name }}</p></td>
                     <td>{{ (transaction.amount ?? 0) ~ '€' }}</td>
-                    <td>{{ transaction.budgetCategory.name }}</td>
+                    <td>{{ transaction.budgetCategory.name ?? "" }}</td>
                     <td class="transaction-table-actions {{ transaction.month.isLocked ? 'transaction-table-actions--locked' }}">
                     {% if (transaction.month.isLocked) %}
                         <i class="transaction-table-actions__icon fa-solid fa-lock"></i>

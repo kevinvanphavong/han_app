@@ -8,7 +8,6 @@
             .transaction-form-row__label,
             .transaction-form-row__label + span {
                 color: whitesmoke;
-            }
             .transaction-form-row #transaction_save {
                 background-color: #167b16;
                 box-shadow: unset;
@@ -102,6 +101,13 @@
             </div>
             {{ form_widget(transactionForm.budgetCategory) }}
         </div>
+
+        {% if transactionForm.delete is defined %}
+            <div class="transaction-form-row transaction-form-row__buttons">
+                {{ form_widget(transactionForm.save) }}
+                {{ form_widget(transactionForm.delete) }}
+            </div>
+        {% endif %}
 
         {% if transactionForm.newBudgetName is defined and transactionForm.newBudgetAmount is defined %}
             <div class="transaction-form-label__new-budget js-transaction-form-label__new-budget transaction-form-label__new-budget--unactive">

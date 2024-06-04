@@ -46,6 +46,7 @@ button.transaction-form-row__input {
     border: none;
     display: flex;
     grid-gap: 0.25em;
+    width: max-content;
 }
 
 .transaction-filter-form-row__input#transaction_filter_date select,
