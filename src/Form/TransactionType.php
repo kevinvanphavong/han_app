@@ -24,6 +24,7 @@ class TransactionType extends AbstractType
         $date = $options['date'] ?: null;
         $user = $options['user'];
         $lastTransaction = $options['last_transaction'];
+        $currentMonth = $options['current_month'];
         $months = $options['months'];
         $newBudgetIsEnable = $options['new_budget_is_enable'];
         $deleteButton = $options['delete_button'];
@@ -45,7 +46,7 @@ class TransactionType extends AbstractType
                     }
                     return $data;
                 },
-                'data' => null,
+                'data' => $currentMonth,
                 'label_attr'     => ['class' => 'transaction-form-row__label'],
                 'attr'           => ['class' => 'transaction-form-row__input'],
                 'row_attr'       => ['class' => 'transaction-form-row'],
@@ -75,6 +76,7 @@ class TransactionType extends AbstractType
                         ->where('b.user = :user')
                         ->setParameter('user', $user);
                 },
+                'placeholder'    => '** Select a budget category **', // Ajouter une option vide par défaut
                 'help'           => '(Select existing budget or add new one)',
                 'label_attr'     => ['class' => 'transaction-form-row__label'],
                 'attr'           => ['class' => 'transaction-form-row__input'],
@@ -119,6 +121,7 @@ class TransactionType extends AbstractType
         $resolver->setDefaults([
             'data_class' => null,
             'user' => null,
+            'current_month' => null,
             'months' => null,
             'date' => null,
             'last_transaction' => null,
