@@ -36,6 +36,9 @@ class Transaction
     #[ORM\JoinColumn(nullable: false)]
     private ?User $user = null;
 
+    #[ORM\Column(nullable: true)]
+    private ?bool $from_upload = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -121,6 +124,18 @@ class Transaction
     public function setUser(?User $user): static
     {
         $this->user = $user;
+
+        return $this;
+    }
+
+    public function isFromUpload(): ?bool
+    {
+        return $this->from_upload;
+    }
+
+    public function setFromUpload(?bool $from_upload): static
+    {
+        $this->from_upload = $from_upload;
 
         return $this;
     }
