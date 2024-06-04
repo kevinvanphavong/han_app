@@ -28,6 +28,8 @@ class FileTransactionsController extends AbstractController
         $filePath = $this->getParameter('kernel.project_dir').'/public/files/transactions-mid-may-2024.csv';
         $fileContent = $this->readTransactionsCsvFile($filePath);
 
+        // Récupérer le mois actuel pour l'ajouter aux transactions
+        $currentMonth = $this->monthRepository->findOneBy(['user' => $this->getUser()], ['date' => 'DESC']);
         // Supprimer la dernière ligne qui n'est pas une transaction
         array_pop($fileContent);
 
@@ -41,7 +43,7 @@ class FileTransactionsController extends AbstractController
             $newTransaction->setUser($this->getUser());
             $newTransaction->setDate($newDate);
             $newTransaction->setName($transaction[4]);
-            $newTransaction->setAmount(intval($transaction[1]));
+            $newTransaction->setAmount(abs(intval($transaction[1])));
             $newTransaction->setType(
                 $this->getTransactionTypeByAmount($transaction[1])
             );
@@ -50,6 +52,7 @@ class FileTransactionsController extends AbstractController
             $newTransactionForm = $this->createForm(\App\Form\TransactionType::class, $newTransaction, [
                 'user' => $this->getUser(),
                 'date' => $newDate,
+                'current_month' => $currentMonth,
                 'months' => $this->monthRepository->findBy(['user' => $this->getUser()]),
                 'data_class' => Transaction::class,
                 'new_budget_is_enable' => false,
