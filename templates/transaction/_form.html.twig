@@ -8,6 +8,7 @@
             .transaction-form-row__label,
             .transaction-form-row__label + span {
                 color: whitesmoke;
+            }
             .transaction-form-row #transaction_save {
                 background-color: #167b16;
                 box-shadow: unset;
@@ -102,10 +103,22 @@
             {{ form_widget(transactionForm.budgetCategory) }}
         </div>
 
-        {% if transactionForm.delete is defined %}
+        {% if deleteButton is defined %}
             <div class="transaction-form-row transaction-form-row__buttons">
-                {{ form_widget(transactionForm.save) }}
-                {{ form_widget(transactionForm.delete) }}
+                <button type="button"
+                        class="transaction-form-row__input transaction-form-row__input-button transaction-form-row__input-button--save"
+                        data-transaction-id="{{ transactionForm.vars.value.id }}"
+                        data-action-name="{{ 'save' }}"
+                        data-href="{{ path('update_uploaded_transaction') }}">
+                    {{ 'Save' }}
+                </button>
+                <button type="button"
+                        class="transaction-form-row__input transaction-form-row__input-button transaction-form-row__input-button--delete"
+                        data-transaction-id="{{ transactionForm.vars.value.id }}"
+                        data-action-name="{{ 'delete' }}"
+                        data-href="{{ path('update_uploaded_transaction') }}">
+                    {{ 'Delete' }}
+                </button>
             </div>
         {% endif %}
 
