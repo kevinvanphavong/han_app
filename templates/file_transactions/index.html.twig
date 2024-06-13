@@ -9,12 +9,35 @@
             flex-direction: column;
             gap: 1em;
         }
+        .uploaded-transactions__form-container .transaction-form--in-error {
+            animation: myAnim2 1s ease 0s 1 normal forwards;
+        }
+        @keyframes myAnim2 {
+            0% {
+                box-shadow: none;
+            }
+            25% {
+                border: 1px solid darkred;
+                box-shadow: 0 0 4px 2px indianred;
+            }
+            50% {
+                box-shadow: 0 0 2px 2px indianred;
+            }
+            75% {
+                box-shadow: 0 0 4px 4px indianred;
+            }
+            100% {
+                border: 1px solid darkgrey;
+                box-shadow: 0 0 1px 1px indianred;
+            }
+        }
         .uploaded-transactions__form-container .transaction-form {
             flex-direction: row;
             padding: 1em;
             border: 1px solid darkgrey;
             border-radius: 10px;
             background-color: #e7e7e7;
+            overflow: scroll;
         }
         .uploaded-transactions__form-container .transaction-form #transaction_amount {
             width: 100px;
@@ -27,13 +50,67 @@
             display: flex;
             justify-content: flex-end;
         }
-        .uploaded-transactions__form-container .transaction-form .transaction-form-row #transaction_delete {
-            background-color: red;
+        .uploaded-transactions__form-container .transaction-form .transaction-form-row__input#transaction_date{
+            width: max-content;
+        }
+        .uploaded-transactions__form-container .transaction-form .transaction-form-row .transaction-form-row__input-button--save {
+            background-color: forestgreen;
+            color: whitesmoke;
+            cursor: pointer;
+        }
+        .uploaded-transactions__form-container .transaction-form .transaction-form-row .transaction-form-row__input-button--delete {
+            background-color: darkred;
+            color: whitesmoke;
+            cursor: pointer;
+        }
+
+        .uploaded-transactions__flash-message {
+            position: absolute;
+            bottom: 1em;
+            left: 1em;
+            width: fit-content;
+            display: none;
+            align-items: center;
+            gap: 0.5em;
+            padding: 1em;
+            border-radius: 10px;
             color: whitesmoke;
         }
-        .uploaded-transactions__form-container .transaction-form .transaction-form-row #transaction_save {
-            width: 100%;
-            margin: 0;
+        .uploaded-transactions__flash-message--success {
+            background-color: forestgreen;
+        }
+        .uploaded-transactions__flash-message--error {
+            background-color: darkred;
+        }
+        .uploaded-transactions__flash-message--active {
+            display: flex;
+            animation: myAnim 2s ease 0s 1 normal forwards;
+        }
+
+        @keyframes myAnim {
+            0% {
+                animation-timing-function: ease-in;
+                opacity: 0;
+                transform: translateX(48px);
+            }
+
+            15% {
+                opacity: 1;
+            }
+
+            25% {
+                animation-timing-function: ease-in;
+                transform: translateX(0px);
+            }
+
+            75% {
+                opacity: 1;
+            }
+
+
+            100% {
+                opacity: 0;
+            }
         }
     </style>
 {% endblock stylesheets %}
@@ -47,12 +124,13 @@
     <h2>Upload your transactions file</h2>
     <p>Only for LCL Bank</p>
     <div class="upload-transaction-file__form-container">
-        <p>Créer un formulaire pour choisir un mois et un file uploader</p>
+        {{ form_start(fileTransactionsForm) }}
+        {{ form_end(fileTransactionsForm) }}
     </div>
 
-    <h2>Uploaded Transactions to check </h2>
+    <h2>Uploaded Transactions to check <span class="js-uploaded-transaction-forms-count">({{ uploadedTransactionsForm|length }})</span></h2>
     <div class="uploaded-transactions__form-container">
-        {% for transactionForm in uploaded_transactions_form %}
+        {% for transactionForm in uploadedTransactionsForm %}
             {# Créer plusieurs bloc de formulaire d'édition de chaque transaction #}
             {% include 'transaction/_form.html.twig' with {
                 'transactionForm': transactionForm,
@@ -61,5 +139,156 @@
             } %}
         {% endfor %}
     </div>
+    <div class="uploaded-transactions__flash-message-container">
+        <div class="uploaded-transactions__flash-message uploaded-transactions__flash-message-_error">
+                <i class="fa-solid fa-circle-exclamation"></i>
+                <span class="uploaded-transactions__flash-message-content"></span>
+        </div>
+        <div class="uploaded-transactions__flash-message uploaded-transactions__flash-message--success">
+                <i class="fa-solid fa-circle-check"></i>
+                <span class="uploaded-transactions__flash-message-content"></span>
+            </div>
+        </div>
+    </div>
 </div>
+
+<script>
+  function updateUploadedTransactions() {
+    let transactionForms = document.querySelectorAll('.transaction-form');
+    if (!transactionForms) {
+      return;
+    }
+    transactionForms.forEach(function(transactionForm) {
+      let buttons = transactionForm.querySelectorAll('.transaction-form-row__input-button');
+      if (!buttons) {
+        return;
+      }
+      buttons.forEach((button) => {
+          button.addEventListener('click', function() {
+            let actionName = button.getAttribute('data-action-name');
+            let transactionId = button.getAttribute('data-transaction-id');
+            let href = button.getAttribute('data-href');
+            const formData = new FormData(transactionForm);
+            formData.append('transactionId', transactionId);
+            formData.append('actionName', actionName)
+
+            fetch(href, {
+              method: 'POST',
+              body: formData
+            })
+              .then(response => response.json())
+              .then((data) => {
+                if (data.status === 200) {
+                    transactionForm.remove();
+                }
+                displayCustomMessageReturned(data)
+                alertTransform(transactionForm)
+              })
+        })
+      })
+    })
+  }
+
+  function deleteUploadedTransactions() {
+    let transactionForms = document.querySelectorAll('.transaction-form');
+    if (!transactionForms) {
+      return;
+    }
+    transactionForms.forEach(function(transactionForm) {
+      let deleteButton = transactionForm.querySelector('.transaction-form-row__input-button--delete');
+      if (!deleteButton) {
+        return;
+      }
+      deleteButton.addEventListener('click', function() {
+        let transactionId = deleteButton.getAttribute('data-transaction-id');
+        let href = deleteButton.getAttribute('data-href');
+        const formData = new FormData(transactionForm);
+        formData.append('transactionId', transactionId);
+        formData.append('actionName', 'delete')
+
+        fetch(href, {
+          method: 'POST',
+          body: formData
+        })
+          .then(response => response.json())
+          .then((data) => {
+            transactionForm.remove();
+            displayCustomMessageReturned(data)
+          })
+      })
+    })
+  }
+
+  function saveUploadedTransactions() {
+    let transactionForms = document.querySelectorAll('.transaction-form');
+    if (!transactionForms) {
+      return;
+    }
+    transactionForms.forEach(function(transactionForm) {
+      let saveButton = transactionForm.querySelector('.transaction-form-row__input-button--save');
+      if (!saveButton) {
+        return;
+      }
+      saveButton.addEventListener('click', function() {
+        let transactionId = saveButton.getAttribute('data-transaction-id');
+        let href = saveButton.getAttribute('data-href');
+        const formData = new FormData(transactionForm);
+        formData.append('transactionId', transactionId);
+        formData.append('actionName', 'save')
+
+        fetch(href, {
+          method: 'POST',
+          body: formData
+        })
+          .then(response => response.json())
+          .then((data) => {
+          //   transactionForm.remove();
+            displayCustomMessageReturned(data)
+          })
+      })
+    })
+  }
+
+  function displayCustomMessageReturned(data) {
+    // Récupérer dans le DOM le tag qui affichera les data
+    const keyClassname = 'uploaded-transactions__flash-message';
+    let customFlashMessageContainer = document.querySelector('.' + keyClassname + '-container');
+    if (!customFlashMessageContainer) {
+      return;
+    }
+    let newFlashMessage = document.createElement('div');
+    newFlashMessage.classList.add(keyClassname)
+    let newFlashMessageIcon = document.createElement('i')
+    newFlashMessage.classList.add(keyClassname + '--' + data.class)
+    if (data.class === 'success') {
+      newFlashMessageIcon.classList.add('fa-solid','fa-circle-check')
+    } else {
+      newFlashMessageIcon.classList.add('fa-solid','fa-circle-exclamation')
+    }
+    let newFlashMessageContent = document.createElement('span');
+    newFlashMessageContent.classList.add(keyClassname + '-content');
+    newFlashMessageContent.innerText = data.message;
+
+    newFlashMessage.append(newFlashMessageIcon, newFlashMessageContent);
+    customFlashMessageContainer.appendChild(newFlashMessage);
+
+    // Ajouter une classe au message pour l'afficher
+    newFlashMessage.classList.add(keyClassname + '--active');
+
+    // Retirer la class qui l'affiche, au bout de 2s
+    setTimeout(() => {
+      newFlashMessage.remove();
+    }, 3000);
+  }
+
+  function alertTransform(transactionForm) {
+    transactionForm.classList.add('transaction-form--in-error');
+
+    setTimeout(() => {
+      transactionForm.classList.remove('transaction-form--in-error');
+    }, 1200);
+  }
+
+  updateUploadedTransactions();
+</script>
 {% endblock %}
