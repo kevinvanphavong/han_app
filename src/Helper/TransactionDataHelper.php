@@ -33,6 +33,7 @@ class TransactionDataHelper
         $transaction->setAmount($transactionFormData['amount']);
         $transaction->setType($transactionFormData['type']);
         $transaction->setUser($user);
+        $transaction->setFromUpload(false);
 
         if ($transactionFormData['budgetCategory'] === null
             && $transactionFormData['newBudgetName'] === null
