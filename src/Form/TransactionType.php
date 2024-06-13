@@ -24,17 +24,14 @@ class TransactionType extends AbstractType
         $date = $options['date'] ?: null;
         $user = $options['user'];
         $lastTransaction = $options['last_transaction'];
-        $currentMonth = $options['current_month'];
         $months = $options['months'];
         $newBudgetIsEnable = $options['new_budget_is_enable'];
-        $deleteButton = $options['delete_button'];
 
         $builder
             ->add('date', DateType::class, [
                 'label_attr'     => ['class' => 'transaction-form-row__label'],
                 'attr'           => ['class' => 'transaction-form-row__input'],
                 'row_attr'       => ['class' => 'transaction-form-row'],
-                'data'           => $lastTransaction ? $lastTransaction->getDate() : $date,
             ])
             ->add('month', EntityType::class, [
                 'class'          => Month::class,
@@ -46,7 +43,6 @@ class TransactionType extends AbstractType
                     }
                     return $data;
                 },
-                'data' => $currentMonth,
                 'label_attr'     => ['class' => 'transaction-form-row__label'],
                 'attr'           => ['class' => 'transaction-form-row__input'],
                 'row_attr'       => ['class' => 'transaction-form-row'],
@@ -100,19 +96,13 @@ class TransactionType extends AbstractType
                     'required'       => false
                 ]);
             }
-            if ($deleteButton) {
-                $builder
-                    ->add('delete', ButtonType::class, [
-                        'label'         => 'Delete',
-                        'attr'           => ['class' => 'transaction-form-row__input'],
-                        'row_attr'       => ['class' => 'transaction-form-row'],
-                    ]);
+            if ($options['saveButton']) {
+                $builder->add('save', SubmitType::class, [
+                    'label'         => 'Save',
+                    'attr'           => ['class' => 'transaction-form-row__input'],
+                    'row_attr'       => ['class' => 'transaction-form-row'],
+                ]);
             }
-            $builder->add('save', SubmitType::class, [
-                'label'         => 'Save',
-                'attr'           => ['class' => 'transaction-form-row__input'],
-                'row_attr'       => ['class' => 'transaction-form-row'],
-            ])
         ;
     }
 
@@ -121,12 +111,11 @@ class TransactionType extends AbstractType
         $resolver->setDefaults([
             'data_class' => null,
             'user' => null,
-            'current_month' => null,
             'months' => null,
             'date' => null,
             'last_transaction' => null,
             'new_budget_is_enable' => null,
-            'delete_button' => null,
+            'saveButton' => true,
             'attr' => ['class' => 'transaction-form', 'id' => 'transaction-form']
         ]);
     }
