@@ -1,3 +1,4 @@
+.file-transactions-form,
 .transaction-filter-form,
 .month-form,
 .budget-form,
@@ -7,6 +8,7 @@
     flex-direction: column;
     grid-gap: 1em;
 }
+.file-transactions-form-row,
 .transaction-filter-form-row,
 .month-form-row,
 .budget-form-row,
@@ -15,6 +17,7 @@
     flex-direction: column;
     grid-gap: 0.5em;
 }
+.file-transactions-form-row__input,
 .transaction-filter-form-row__input,
 .month-form-row__input,
 .budget-form-row__input,
@@ -63,6 +66,7 @@ button.transaction-form-row__input {
     display: none;
 }
 
+.file-transactions-form #file_transactions_save,
 .month-form-row #month_save,
 .budget-form-row #budget_save,
 .transaction-form-row #transaction_save {
@@ -75,6 +79,7 @@ button.transaction-form-row__input {
     box-shadow: 2px 2px 10px var(--shadow-color);
 }
 
+.file-transactions-form #file_transactions_save:hover,
 .month-form-row #month_save:hover,
 .budget-form-row #budget_save:hover,
 .transaction-form-row #transaction_save:hover {
@@ -112,6 +117,28 @@ button.transaction-form-row__input {
     width: 50%;
     margin: 4em auto;
 }
+
+/*File Transactions Form*/
+.file-transactions-form {
+    max-width: 1080px;
+    margin: 0 auto;
+    width: 100%;
+}
+.file-transactions-form-row {
+    justify-content: end;
+}
+.file-transactions-form-row:first-of-type {
+    flex-grow: 1;
+}
+.file-transactions-form #file_transactions_save {
+    width: 100%;
+}
+@media screen and (min-width: 800px){
+    .file-transactions-form {
+        flex-direction: row;
+    }
+}
+/*File Transactions Form*/
 
 /*Month Form*/
 .month-form-row__input-budgets {

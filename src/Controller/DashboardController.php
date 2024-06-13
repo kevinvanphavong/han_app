@@ -53,20 +53,7 @@ class DashboardController extends AbstractController
             'new_budget_is_enable' => false,
         ]);
 
-        $transactionFilterForm = $this->createForm(TransactionFilterType::class, [], [
-            'user' => $user,
-            'months' => $months,
-            'url' => $this->generateUrl('dashboard_page'),
-        ]);
-        $transactionFilterForm->remove('limit');
-
-        $transactionFilterForm->handleRequest($request);
         $transactionForm->handleRequest($request);
-
-        if ($transactionFilterForm->isSubmitted() && $transactionFilterForm->isValid()) {
-            $transactions = $this->transactionDataHelper->getTransactionsWithFilters($transactionFilterForm->getData(), $user);
-            $this->addFlash('success', 'Filters applied successfully');
-        }
 
         if ($transactionForm->isSubmitted() && $transactionForm->isValid()) {
             $this->submitTransaction($transactionForm);
@@ -80,7 +67,6 @@ class DashboardController extends AbstractController
             'months' => $this->monthRepository->findBy(['user' => $user], ['date' => 'DESC']),
             'budgets' => $this->budgetRepository->findBy(['user' => $user]),
             'transactionForm' => $transactionForm,
-            'transactionFilterForm' => $transactionFilterForm->createView(),
             'isLoginReferer' => str_contains($request->headers->get('referer'), 'login'),
             'emojis' => $this->userDataHelper->getUserEmojis(),
         ]);
@@ -115,6 +101,7 @@ class DashboardController extends AbstractController
                 return $this->redirectToRoute('creation_form_page');
             } elseif ($monthForm->isSubmitted() && $monthForm->isValid()) {
                 $monthForm->getData()->setUser($this->getUser());
+                $monthForm->getData()->setIsLocked(false);
                 $entityManager->persist($monthForm->getData());
                 $this->addFlash('success', 'Month created successfully');
             } elseif ($budgetForm->isSubmitted() && $budgetForm->isValid()) {

@@ -5,11 +5,12 @@
             <h2>{{ transactionTableTitle }}</h2>
         {% endif %}
         <div class="button-action-container">
-            <button class="button-action button-action-filter">Filter</button>
+            {% if transactionFilterForm is defined %}
+                <button class="button-action button-action-filter">Filter</button>
+            {% endif %}
             {% if seeMoreButtonActive is same as true %}
                 <a href="{{ path('more_transactions_page') }}" class="button-action button-action-see-more">See more</a>
             {% endif %}
-{#            <a href="{{ path('creation_form_page') }}#transaction-form" class="button-action button-action-add">Add new transaction</a>#}
             <button class="button-action button-action-add button-action-add-transaction">Add new transaction</button>
         </div>
     </div>
@@ -20,11 +21,13 @@
         </div>
     </div>
 
-    <div class="filters-container {{ transactionFilterForm.vars.submitted ? 'filters-container--active' : 'filters-container--hidden' }}">
-        <div class="filters">
-            {% include('transaction/_filter-form.html.twig') with {'transactionFilterForm' : transactionFilterForm} %}
+   {% if transactionFilterForm is defined %}
+        <div class="filters-container {{ transactionFilterForm.vars.submitted ? 'filters-container--active' : 'filters-container--hidden' }}">
+            <div class="filters">
+                {% include('transaction/_filter-form.html.twig') with {'transactionFilterForm' : transactionFilterForm} %}
+            </div>
         </div>
-    </div>
+   {% endif %}
 
     {% if seeMoreButtonActive is same as false %}
         <div class="container-transaction-table">

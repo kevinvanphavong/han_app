@@ -14,7 +14,6 @@
     <div class="wrapper">
         <div class="tables-view">
             {% include('transaction/_table.html.twig') with {
-                'transactionFilterForm' : transactionFilterForm,
                 'transactionTableTitle' : '💸 ' ~ transactionsLimitResults ~ ' Lastest transactions',
                 'seeMoreButtonActive'   : true,
                 'urlResetFilter'        : path('dashboard_page'),
