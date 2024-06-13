@@ -25,7 +25,7 @@ class MonthRepository extends ServiceEntityRepository
     {
         $currentMonth = new \DateTime();
         $months = $this->createQueryBuilder('m')
-            ->andWhere('m.user = :user')
+            ->where('m.user = :user')
             ->setParameter('user', $user)
             ->orderBy('m.date', 'DESC')
             ->getQuery()
