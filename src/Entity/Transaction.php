@@ -30,6 +30,7 @@ class Transaction
     private ?Budget $budgetCategory = null;
 
     #[ORM\ManyToOne]
+    #[ORM\JoinColumn(nullable: false)]
     private ?Month $month = null;
 
     #[ORM\ManyToOne(inversedBy: 'transactions')]
