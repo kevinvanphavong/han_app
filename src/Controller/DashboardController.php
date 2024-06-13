@@ -42,13 +42,13 @@ class DashboardController extends AbstractController
         Request $request,
     ): Response {
         $user = $this->getUser();
-        $months = $this->monthRepository->findBy(['user' => $user], ['date' => 'DESC']);
+        $months = $this->monthRepository->findBy(['user' => $user]);
         $lastTransaction = $this->transactionRepository->findOneBy(['user' => $user], ['date' => 'DESC']);
         $transactions = $this->transactionRepository->findByUserSortedByDateAndIdDesc($user, self::TRANSACTIONS_TABLE_LIMIT_RESULTS);
 
         $transactionForm = $this->createForm(TransactionType::class, [], [
             'user' => $this->getUser(),
-            'months' => $months,
+            'months' => $this->monthRepository->findBy(['user' => $user, 'isLocked' => false]),
             'last_transaction' => $lastTransaction ?? null,
             'new_budget_is_enable' => false,
         ]);
@@ -89,7 +89,7 @@ class DashboardController extends AbstractController
     #[Route('/form/creation', name: 'creation_form_page')]
     public function creation(Request $request, MonthRepository $monthRepository): Response{
         $entityManager = $this->managerRegistry->getManager();
-        $months = $monthRepository->findMonthsSortedByUserAndCurrentDate($this->getUser());
+        $months = $monthRepository->findBy(['user' => $this->getUser(), 'isLocked' => false]);
 
         $budgetForm = $this->createForm(BudgetType::class);
         $monthForm = $this->createForm(MonthType::class, new Month(), [
@@ -140,7 +140,7 @@ class DashboardController extends AbstractController
         BudgetRepository $budgetRepository
     ): Response {
         $user = $this->getUser();
-        $transactions = $transactionRepository->findBy(['user' => $user]);
+        $transactions = $transactionRepository->findBy(['user' => $user, 'from_upload' => false], ['date' => 'DESC']);
         $months = $monthRepository->findBy(['user' => $user], ['date' => 'DESC']);
         $budgets = $budgetRepository->findBudgetsByUserAndNotSalary($user);
         $transactionsSumByBudgetForMonths = $this->transactionDataHelper->getTransactionsSumsForBudgetGroupByMonth($transactions, $months, $budgets);
@@ -180,12 +180,11 @@ class DashboardController extends AbstractController
         $transactionForm->handleRequest($request);
         $transactionFilterForm->handleRequest($request);
 
-        $transactions = $this->transactionRepository->findBy(['user' => $this->getUser()], ['date' => 'DESC']);
+        $transactions = $this->transactionRepository->findBy(['user' => $this->getUser(), 'from_upload' => false], ['date' => 'DESC']);
         if ($transactionFilterForm->isSubmitted() && $transactionFilterForm->isValid()) {
             $transactions = $this->transactionDataHelper->getTransactionsWithFilters($transactionFilterForm->getData(), $user);
             $this->addFlash('success', 'Filters applied successfully');
         }
-
 
         if ($transactionForm->isSubmitted() && $transactionForm->isValid()) {
             $this->submitTransaction($transactionForm);
